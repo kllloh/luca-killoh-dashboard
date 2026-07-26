@@ -4,115 +4,103 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Luca Killoh — Player Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
 <style>
-  html, body { margin: 0; padding: 0; }
-  body { background: #f9f9f7; }
-  @media (prefers-color-scheme: dark) {
-    :root:where(:not([data-theme="light"])) body { background: #0d0d0d; }
-  }
-  :root[data-theme="dark"] body { background: #0d0d0d; }
+  html, body { margin: 0; padding: 0; background: #0a0a0d; }
 
   .viz-root {
-    color-scheme: light;
-    --surface-1:      #fcfcfb;
-    --page-plane:     #f9f9f7;
-    --text-primary:   #0b0b0b;
-    --text-secondary: #52514e;
-    --gridline:       #e1e0d9;
-    --baseline:       #c3c2b7;
-    --border:         rgba(11,11,11,0.10);
-    --series-1:       #2a78d6;   /* Luca — highlight blue */
-    --series-2:       #eb6834;   /* orange accent */
-    --bar-neutral:    #d8d6cd;   /* muted context bars */
-    --text-win:       #006300;   /* success text, AA-safe on light surface */
-    --text-loss:      #b23225;   /* loss text, AA-safe on light surface */
-    --row-hi:         rgba(42,120,214,0.08);
-    --card-shadow:    0 1px 2px rgba(11,11,11,0.06);
+    color-scheme: dark;
+    --surface-1:      #16171d;
+    --page-plane:     #0a0a0d;
+    --text-primary:   #ffffff;
+    --text-secondary: #9aa1b1;
+    --gridline:       rgba(255,255,255,0.08);
+    --baseline:       rgba(255,255,255,0.25);
+    --border:         rgba(255,255,255,0.10);
+    --series-1:       #4c8dfd;   /* Luca — highlight blue */
+    --accent-red:     #ee2737;   /* decorative accent only, not used as text */
+    --gold:           #ffb020;
+    --bar-neutral:    #2b2d36;
+    --text-win:       #22c55e;   /* 7.85:1 on surface */
+    --text-loss:      #f87171;   /* 6.46:1 on surface */
+    --row-hi:         rgba(76,141,253,0.16);
+    --card-shadow:    0 6px 20px rgba(0,0,0,0.45);
+    --font-display:   'Anton', system-ui, sans-serif;
     font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
     background: var(--page-plane);
     color: var(--text-primary);
   }
-  @media (prefers-color-scheme: dark) {
-    :root:where(:not([data-theme="light"])) .viz-root {
-      color-scheme: dark;
-      --surface-1:      #1a1a19;
-      --page-plane:     #0d0d0d;
-      --text-primary:   #ffffff;
-      --text-secondary: #c3c2b7;
-      --gridline:       #2c2c2a;
-      --baseline:       #383835;
-      --border:         rgba(255,255,255,0.10);
-      --series-1:       #3987e5;
-      --series-2:       #d95926;
-      --bar-neutral:    #37372f;
-      --text-win:       #0ca30c;   /* passes 5.19:1 on dark surface */
-      --text-loss:      #ec835a;   /* passes 6.60:1 on dark surface */
-      --row-hi:         rgba(57,135,229,0.12);
-      --card-shadow:    0 1px 2px rgba(0,0,0,0.4);
-    }
-  }
-  :root[data-theme="dark"] .viz-root {
-    color-scheme: dark;
-    --surface-1:      #1a1a19;
-    --page-plane:     #0d0d0d;
-    --text-primary:   #ffffff;
-    --text-secondary: #c3c2b7;
-    --gridline:       #2c2c2a;
-    --baseline:       #383835;
-    --border:         rgba(255,255,255,0.10);
-    --series-1:       #3987e5;
-    --series-2:       #d95926;
-    --bar-neutral:    #37372f;
-    --text-win:       #0ca30c;
-    --text-loss:      #ec835a;
-    --row-hi:         rgba(57,135,229,0.12);
-    --card-shadow:    0 1px 2px rgba(0,0,0,0.4);
-  }
 
   .viz-root * { box-sizing: border-box; }
-  .wrap { max-width: 1040px; margin: 0 auto; padding: 20px 16px 40px; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 20px 16px 48px; }
 
   /* header */
   .header {
-    display: flex; align-items: center; gap: 16px;
-    background: var(--surface-1); border: 1px solid var(--border);
-    border-radius: 14px; padding: 20px 22px; box-shadow: var(--card-shadow);
-    margin-bottom: 16px; flex-wrap: wrap;
+    display: flex; align-items: center; gap: 18px;
+    background: linear-gradient(135deg, #1b1c24, #0f0f14);
+    border: 1px solid var(--border);
+    border-radius: 6px; padding: 22px 26px; box-shadow: var(--card-shadow);
+    margin-bottom: 0; flex-wrap: wrap; position: relative; overflow: hidden;
+  }
+  .header::before {
+    content: ""; position: absolute; top: -50%; left: -8%; width: 280px; height: 280px;
+    background: radial-gradient(circle, rgba(238,39,55,0.22), transparent 70%);
+    pointer-events: none;
   }
   .jersey {
-    width: 64px; height: 64px; border-radius: 12px;
-    background: var(--series-1); color: #fff;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 28px; font-weight: 800; flex: none;
+    width: 72px; height: 72px; border-radius: 8px;
+    background: linear-gradient(160deg, var(--accent-red), var(--series-1));
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 400; font-size: 32px; letter-spacing: 1px;
+    flex: none; position: relative; z-index: 1;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.5), inset 0 0 0 2px rgba(255,255,255,0.15);
   }
-  .header h1 { margin: 0; font-size: 22px; font-weight: 800; }
-  .header .meta { color: var(--text-secondary); font-size: 13.5px; margin-top: 4px; line-height: 1.5; }
-  .header .comp { color: var(--text-secondary); font-size: 12.5px; margin-top: 2px; }
+  .header h1 {
+    margin: 0; font-family: var(--font-display); font-weight: 400;
+    font-size: 30px; letter-spacing: .5px; text-transform: uppercase;
+    position: relative; z-index: 1;
+  }
+  .header .meta { color: var(--text-secondary); font-size: 13.5px; margin-top: 6px; line-height: 1.5; position: relative; z-index: 1; }
+  .header .comp { color: var(--text-secondary); font-size: 12.5px; margin-top: 2px; position: relative; z-index: 1; opacity: .85; }
   .badge {
     margin-left: auto; display: flex; align-items: center; gap: 6px;
-    background: rgba(12,163,12,0.12); color: var(--text-win);
-    border-radius: 999px; padding: 6px 12px; font-size: 13px; font-weight: 700;
-    white-space: nowrap;
+    background: rgba(34,197,94,0.14); color: var(--text-win);
+    border: 1px solid rgba(34,197,94,0.35);
+    border-radius: 4px; padding: 7px 14px; font-size: 12px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .04em;
+    white-space: nowrap; position: relative; z-index: 1;
+  }
+
+  .stripe {
+    height: 5px; margin: 16px 0; border-radius: 3px;
+    background: linear-gradient(90deg, var(--accent-red) 0 33%, #ffffff 33% 66%, var(--series-1) 66% 100%);
   }
 
   /* stat tiles */
   .tiles { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 16px; }
   .tile {
-    background: var(--surface-1); border: 1px solid var(--border);
-    border-radius: 12px; padding: 14px 16px; box-shadow: var(--card-shadow);
+    background: var(--surface-1); border: 1px solid var(--border); border-bottom: 3px solid var(--accent-red);
+    border-radius: 6px; padding: 16px 16px 14px; box-shadow: var(--card-shadow);
   }
-  .tile .label { font-size: 11.5px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .04em; font-weight: 600; }
-  .tile .value { font-size: 26px; font-weight: 800; margin-top: 4px; }
-  .tile .sub { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+  .tile .label { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .06em; font-weight: 700; }
+  .tile .value { font-family: var(--font-display); font-weight: 400; font-size: 32px; margin-top: 6px; color: var(--gold); letter-spacing: .5px; }
+  .tile .sub { font-size: 11.5px; color: var(--text-secondary); margin-top: 4px; }
 
   /* cards */
   .card {
     background: var(--surface-1); border: 1px solid var(--border);
-    border-radius: 14px; padding: 20px 22px 16px; box-shadow: var(--card-shadow);
+    border-radius: 6px; padding: 22px 24px 18px; box-shadow: var(--card-shadow);
     margin-bottom: 16px;
   }
-  .card h2 { margin: 0 0 2px; font-size: 15.5px; font-weight: 700; }
-  .card .card-sub { color: var(--text-secondary); font-size: 12.5px; margin-bottom: 16px; }
+  .card h2 {
+    margin: 0 0 4px; font-family: var(--font-display); font-weight: 400;
+    font-size: 19px; text-transform: uppercase; letter-spacing: .03em;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .card h2::before { content: ""; width: 5px; height: 18px; background: var(--accent-red); border-radius: 2px; display: inline-block; }
+  .card .card-sub { color: var(--text-secondary); font-size: 12.5px; margin-bottom: 18px; }
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
   /* points-per-game bar chart, grouped by division */
@@ -120,7 +108,7 @@
   .pg-group { flex: none; }
   .pg-group.g4 { flex-basis: 30%; }
   .pg-group.g3 { flex-basis: 62%; }
-  .pg-group-label { font-size: 11.5px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .03em; margin-bottom: 10px; }
+  .pg-group-label { font-size: 11.5px; font-weight: 800; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 10px; }
   .pg-sep { width: 1px; background: var(--border); align-self: stretch; margin-top: 24px; }
   .pg-chart { display: flex; gap: 10px; align-items: flex-end; height: 190px; padding: 0 2px; position: relative; }
   .pg-chart::before {
@@ -128,8 +116,8 @@
     border-top: 1px solid var(--baseline);
   }
   .pg-col { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; position: relative; }
-  .pg-bar-label { font-size: 13px; font-weight: 800; color: var(--text-primary); margin-bottom: 6px; }
-  .pg-bar { width: 70%; border-radius: 4px 4px 0 0; background: var(--series-1); }
+  .pg-bar-label { font-family: var(--font-display); font-weight: 400; font-size: 17px; color: var(--text-primary); margin-bottom: 6px; }
+  .pg-bar { width: 70%; border-radius: 3px 3px 0 0; background: linear-gradient(180deg, #6ea4ff, var(--series-1)); }
   .pg-x { margin-top: 8px; font-size: 11.5px; color: var(--text-secondary); font-weight: 700; }
   .pg-result { margin-top: 4px; font-size: 10px; font-weight: 700; white-space: nowrap; }
   .pg-result.w { color: var(--text-win); }
@@ -140,15 +128,15 @@
   .hbar-name { font-size: 12.5px; color: var(--text-primary); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .hbar-name.me { color: var(--series-1); font-weight: 800; }
   .hbar-track { position: relative; height: 14px; background: transparent; }
-  .hbar-fill { position: absolute; left: 0; top: 0; height: 100%; border-radius: 4px; background: var(--bar-neutral); }
-  .hbar-fill.me { background: var(--series-1); }
+  .hbar-fill { position: absolute; left: 0; top: 0; height: 100%; border-radius: 3px; background: var(--bar-neutral); }
+  .hbar-fill.me { background: linear-gradient(90deg, var(--series-1), #7fb0ff); }
   .hbar-val { font-size: 12.5px; font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; color: var(--text-primary); }
   .hbar-val.me { color: var(--series-1); }
 
   /* ladder table */
   table.ladder { width: 100%; border-collapse: collapse; font-size: 12.5px; }
   table.ladder th, table.ladder td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--gridline); font-variant-numeric: tabular-nums; }
-  table.ladder th { color: var(--text-secondary); font-weight: 600; text-transform: uppercase; font-size: 10px; letter-spacing: .03em; }
+  table.ladder th { color: var(--text-secondary); font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: .04em; border-bottom: 2px solid var(--accent-red); }
   table.ladder td.num, table.ladder th.num { text-align: right; }
   table.ladder tr.me { background: var(--row-hi); }
   table.ladder tr.me td:first-child { font-weight: 800; color: var(--series-1); }
@@ -158,26 +146,34 @@
   details.tbl summary { cursor: pointer; font-size: 12px; color: var(--text-secondary); padding: 4px 0; }
   table.data-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12.5px; }
   table.data-table th, table.data-table td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--gridline); font-variant-numeric: tabular-nums; }
-  table.data-table th { color: var(--text-secondary); font-weight: 600; text-transform: uppercase; font-size: 10.5px; letter-spacing: .03em; }
+  table.data-table th { color: var(--text-secondary); font-weight: 700; text-transform: uppercase; font-size: 10.5px; letter-spacing: .04em; }
 
   .recap-row { display: flex; gap: 22px; flex-wrap: wrap; }
-  .recap-stat .v { font-size: 20px; font-weight: 800; }
-  .recap-stat .l { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .03em; }
+  .recap-stat .v { font-family: var(--font-display); font-weight: 400; font-size: 24px; color: var(--gold); }
+  .recap-stat .l { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .04em; margin-top: 2px; }
 
   .footnote { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
-  .footnote a { color: var(--text-secondary); }
+  .footnote a { color: var(--series-1); }
 
   /* quote */
   .quote-card {
     background: var(--surface-1); border: 1px solid var(--border);
-    border-radius: 14px; padding: 18px 22px; box-shadow: var(--card-shadow);
-    margin: 0 0 16px; border-left: 4px solid var(--series-1);
+    border-radius: 6px; padding: 20px 24px; box-shadow: var(--card-shadow);
+    margin: 0 0 16px; border-left: 4px solid var(--gold);
+    position: relative; overflow: hidden;
+  }
+  .quote-card::before {
+    content: "\201C"; position: absolute; top: -34px; left: 6px;
+    font-family: var(--font-display); font-size: 130px; line-height: 1;
+    color: rgba(255,255,255,0.05); pointer-events: none;
   }
   .quote-card p {
     margin: 0; font-size: 15px; font-style: italic; color: var(--text-primary); line-height: 1.55;
+    position: relative; z-index: 1;
   }
   .quote-card footer {
     margin-top: 8px; font-size: 12.5px; color: var(--text-secondary); font-style: normal;
+    position: relative; z-index: 1;
   }
 
   @media (max-width: 760px) {
@@ -202,6 +198,8 @@
       </div>
       <div class="badge">&#8593; Promoted after 3&#8211;0 start</div>
     </header>
+
+    <div class="stripe"></div>
 
     <main>
 
