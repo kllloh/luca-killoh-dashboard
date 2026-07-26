@@ -1,3 +1,8 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Luca Killoh — Player Dashboard</title>
 <style>
   .viz-root {
@@ -6,15 +11,14 @@
     --page-plane:     #f9f9f7;
     --text-primary:   #0b0b0b;
     --text-secondary: #52514e;
-    --text-muted:     #898781;
     --gridline:       #e1e0d9;
     --baseline:       #c3c2b7;
     --border:         rgba(11,11,11,0.10);
     --series-1:       #2a78d6;   /* Luca — highlight blue */
     --series-2:       #eb6834;   /* orange accent */
     --bar-neutral:    #d8d6cd;   /* muted context bars */
-    --good:           #0ca30c;
-    --serious:        #ec835a;
+    --text-win:       #006300;   /* success text, AA-safe on light surface */
+    --text-loss:      #b23225;   /* loss text, AA-safe on light surface */
     --row-hi:         rgba(42,120,214,0.08);
     --card-shadow:    0 1px 2px rgba(11,11,11,0.06);
     font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -28,15 +32,14 @@
       --page-plane:     #0d0d0d;
       --text-primary:   #ffffff;
       --text-secondary: #c3c2b7;
-      --text-muted:     #898781;
       --gridline:       #2c2c2a;
       --baseline:       #383835;
       --border:         rgba(255,255,255,0.10);
       --series-1:       #3987e5;
       --series-2:       #d95926;
       --bar-neutral:    #37372f;
-      --good:           #0ca30c;
-      --serious:        #ec835a;
+      --text-win:       #0ca30c;   /* passes 5.19:1 on dark surface */
+      --text-loss:      #ec835a;   /* passes 6.60:1 on dark surface */
       --row-hi:         rgba(57,135,229,0.12);
       --card-shadow:    0 1px 2px rgba(0,0,0,0.4);
     }
@@ -47,15 +50,14 @@
     --page-plane:     #0d0d0d;
     --text-primary:   #ffffff;
     --text-secondary: #c3c2b7;
-    --text-muted:     #898781;
     --gridline:       #2c2c2a;
     --baseline:       #383835;
     --border:         rgba(255,255,255,0.10);
     --series-1:       #3987e5;
     --series-2:       #d95926;
     --bar-neutral:    #37372f;
-    --good:           #0ca30c;
-    --serious:        #ec835a;
+    --text-win:       #0ca30c;
+    --text-loss:      #ec835a;
     --row-hi:         rgba(57,135,229,0.12);
     --card-shadow:    0 1px 2px rgba(0,0,0,0.4);
   }
@@ -78,10 +80,10 @@
   }
   .header h1 { margin: 0; font-size: 22px; font-weight: 800; }
   .header .meta { color: var(--text-secondary); font-size: 13.5px; margin-top: 4px; line-height: 1.5; }
-  .header .comp { color: var(--text-muted); font-size: 12.5px; margin-top: 2px; }
+  .header .comp { color: var(--text-secondary); font-size: 12.5px; margin-top: 2px; }
   .badge {
     margin-left: auto; display: flex; align-items: center; gap: 6px;
-    background: rgba(12,163,12,0.12); color: var(--good);
+    background: rgba(12,163,12,0.12); color: var(--text-win);
     border-radius: 999px; padding: 6px 12px; font-size: 13px; font-weight: 700;
     white-space: nowrap;
   }
@@ -92,7 +94,7 @@
     background: var(--surface-1); border: 1px solid var(--border);
     border-radius: 12px; padding: 14px 16px; box-shadow: var(--card-shadow);
   }
-  .tile .label { font-size: 11.5px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .04em; font-weight: 600; }
+  .tile .label { font-size: 11.5px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .04em; font-weight: 600; }
   .tile .value { font-size: 26px; font-weight: 800; margin-top: 4px; }
   .tile .sub { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
 
@@ -123,8 +125,8 @@
   .pg-bar { width: 70%; border-radius: 4px 4px 0 0; background: var(--series-1); }
   .pg-x { margin-top: 8px; font-size: 11.5px; color: var(--text-secondary); font-weight: 700; }
   .pg-result { margin-top: 4px; font-size: 10px; font-weight: 700; white-space: nowrap; }
-  .pg-result.w { color: var(--good); }
-  .pg-result.l { color: var(--serious); }
+  .pg-result.w { color: var(--text-win); }
+  .pg-result.l { color: var(--text-loss); }
 
   /* horizontal bar list (roster / leaderboard) */
   .hbar-row { display: grid; grid-template-columns: 150px 1fr 44px; align-items: center; gap: 10px; padding: 6px 0; }
@@ -139,23 +141,23 @@
   /* ladder table */
   table.ladder { width: 100%; border-collapse: collapse; font-size: 12.5px; }
   table.ladder th, table.ladder td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--gridline); font-variant-numeric: tabular-nums; }
-  table.ladder th { color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 10px; letter-spacing: .03em; }
+  table.ladder th { color: var(--text-secondary); font-weight: 600; text-transform: uppercase; font-size: 10px; letter-spacing: .03em; }
   table.ladder td.num, table.ladder th.num { text-align: right; }
   table.ladder tr.me { background: var(--row-hi); }
   table.ladder tr.me td:first-child { font-weight: 800; color: var(--series-1); }
   table.ladder tr.me td.team { font-weight: 800; color: var(--series-1); }
 
   details.tbl { margin-top: 10px; }
-  details.tbl summary { cursor: pointer; font-size: 12px; color: var(--text-muted); }
+  details.tbl summary { cursor: pointer; font-size: 12px; color: var(--text-secondary); padding: 4px 0; }
   table.data-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12.5px; }
   table.data-table th, table.data-table td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--gridline); font-variant-numeric: tabular-nums; }
-  table.data-table th { color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 10.5px; letter-spacing: .03em; }
+  table.data-table th { color: var(--text-secondary); font-weight: 600; text-transform: uppercase; font-size: 10.5px; letter-spacing: .03em; }
 
   .recap-row { display: flex; gap: 22px; flex-wrap: wrap; }
   .recap-stat .v { font-size: 20px; font-weight: 800; }
-  .recap-stat .l { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .03em; }
+  .recap-stat .l { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .03em; }
 
-  .footnote { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+  .footnote { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
   .footnote a { color: var(--text-secondary); }
 
   @media (max-width: 760px) {
@@ -166,11 +168,12 @@
     .pg-sep { display: none; }
   }
 </style>
-
+</head>
+<body>
 <div class="viz-root">
   <div class="wrap">
 
-    <div class="header">
+    <header class="header">
       <div class="jersey">34</div>
       <div>
         <h1>Luca Killoh</h1>
@@ -178,7 +181,9 @@
         <div class="comp">Sunbury Basketball Association — Junior Domestic Competition, Winter 2026 — now U10 Boys Division 3 (started in Division 4)</div>
       </div>
       <div class="badge">&#8593; Promoted after 3&#8211;0 start</div>
-    </div>
+    </header>
+
+    <main>
 
     <div class="tiles">
       <div class="tile">
@@ -418,5 +423,8 @@
       </div>
     </div>
 
+    </main>
   </div>
 </div>
+</body>
+</html>
