@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Luca Killoh — Player Dashboard</title>
 <style>
+  html, body { margin: 0; padding: 0; }
+  body { background: #f9f9f7; }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) body { background: #0d0d0d; }
+  }
+  :root[data-theme="dark"] body { background: #0d0d0d; }
+
   .viz-root {
     color-scheme: light;
     --surface-1:      #fcfcfb;
