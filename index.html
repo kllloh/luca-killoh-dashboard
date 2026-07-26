@@ -167,6 +167,19 @@
   .footnote { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
   .footnote a { color: var(--text-secondary); }
 
+  /* quote */
+  .quote-card {
+    background: var(--surface-1); border: 1px solid var(--border);
+    border-radius: 14px; padding: 18px 22px; box-shadow: var(--card-shadow);
+    margin: 0 0 16px; border-left: 4px solid var(--series-1);
+  }
+  .quote-card p {
+    margin: 0; font-size: 15px; font-style: italic; color: var(--text-primary); line-height: 1.55;
+  }
+  .quote-card footer {
+    margin-top: 8px; font-size: 12.5px; color: var(--text-secondary); font-style: normal;
+  }
+
   @media (max-width: 760px) {
     .tiles { grid-template-columns: repeat(2, 1fr); }
     .hbar-row { grid-template-columns: 96px 1fr 38px; }
@@ -191,6 +204,11 @@
     </header>
 
     <main>
+
+    <blockquote class="quote-card">
+      <p>&ldquo;I would like to thank my team mates, my Coach, and my Mum. Shout out to Gub Gub. If you know you know. Peace!&rdquo;</p>
+      <footer>&mdash; <cite>Luca Killoh</cite></footer>
+    </blockquote>
 
     <div class="tiles">
       <div class="tile">
