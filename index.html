@@ -155,6 +155,31 @@
   .footnote { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
   .footnote a { color: var(--series-1); }
 
+  /* roster */
+  .roster-list { list-style: none; margin: 0; padding: 0; }
+  .roster-row { display: flex; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--gridline); }
+  .roster-row:last-child { border-bottom: none; }
+  .roster-num {
+    font-family: var(--font-display); font-weight: 400; font-size: 17px; color: var(--series-1);
+    width: 30px; text-align: center; flex: none;
+  }
+  .roster-name { font-size: 13.5px; color: var(--text-primary); font-weight: 600; }
+  .roster-name.me { color: var(--series-1); }
+
+  /* fixtures */
+  .fixture-list { list-style: none; margin: 0; padding: 0; }
+  .fixture-row { padding: 10px 0; border-bottom: 1px solid var(--gridline); }
+  .fixture-row:last-child { border-bottom: none; }
+  .fixture-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .fixture-round { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .04em; font-weight: 700; }
+  .fixture-status { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; padding: 3px 8px; border-radius: 3px; white-space: nowrap; }
+  .fixture-status.upcoming { background: rgba(76,141,253,0.15); color: var(--series-1); }
+  .fixture-status.cancelled { background: rgba(248,113,113,0.15); color: var(--text-loss); }
+  .fixture-status.bye { background: rgba(154,161,177,0.15); color: var(--text-secondary); }
+  .fixture-opp { font-size: 14px; font-weight: 700; color: var(--text-primary); margin-top: 5px; }
+  .fixture-row.is-cancelled .fixture-opp { color: var(--text-secondary); text-decoration: line-through; }
+  .fixture-meta { font-size: 11.5px; color: var(--text-secondary); margin-top: 2px; }
+
   /* scouting report */
   .report-summary { font-size: 13.5px; color: var(--text-secondary); line-height: 1.65; margin: 0 0 18px; }
   .report-summary strong { color: var(--text-primary); }
@@ -424,6 +449,47 @@
           <div class="hbar-track"><div class="hbar-fill" style="width:54%"></div></div>
           <div class="hbar-val">6.5</div>
         </div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <h2>Hawks Roster</h2>
+        <div class="card-sub">Hawks U10 Boys KO — current squad</div>
+        <ul class="roster-list">
+          <li class="roster-row"><span class="roster-num">4</span><span class="roster-name">Harrison O'Connell</span></li>
+          <li class="roster-row"><span class="roster-num">22</span><span class="roster-name">Toby Gregoire</span></li>
+          <li class="roster-row"><span class="roster-num">25</span><span class="roster-name">Jack Matthews</span></li>
+          <li class="roster-row"><span class="roster-num">26</span><span class="roster-name">Stuart Perry</span></li>
+          <li class="roster-row"><span class="roster-num">31</span><span class="roster-name">Ted Bramich</span></li>
+          <li class="roster-row"><span class="roster-num">33</span><span class="roster-name">Austin Roberts</span></li>
+          <li class="roster-row"><span class="roster-num">34</span><span class="roster-name me">Luca Killoh</span></li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>Upcoming Games</h2>
+        <div class="card-sub">Division 3 fixture, Rounds 11&#8211;14</div>
+        <ul class="fixture-list">
+          <li class="fixture-row is-cancelled">
+            <div class="fixture-top"><span class="fixture-round">Round 11 &middot; 01 Aug 2026</span><span class="fixture-status cancelled">Cancelled</span></div>
+            <div class="fixture-opp">vs Hawks U10 Boys NC</div>
+          </li>
+          <li class="fixture-row">
+            <div class="fixture-top"><span class="fixture-round">Round 12 &middot; 08 Aug 2026</span><span class="fixture-status upcoming">Upcoming</span></div>
+            <div class="fixture-opp">vs Saints U10 Boys- KR</div>
+            <div class="fixture-meta">12:40 PM &middot; Macedon Ranges Sports Precinct, Court 3</div>
+          </li>
+          <li class="fixture-row">
+            <div class="fixture-top"><span class="fixture-round">Round 13 &middot; 15 Aug 2026</span><span class="fixture-status upcoming">Upcoming</span></div>
+            <div class="fixture-opp">vs RLU U10 Boys LD</div>
+            <div class="fixture-meta">12:40 PM &middot; Macedon Ranges Sports Precinct, Court 3</div>
+          </li>
+          <li class="fixture-row">
+            <div class="fixture-top"><span class="fixture-round">Round 14 &middot; 22 Aug 2026</span><span class="fixture-status bye">Bye</span></div>
+          </li>
+        </ul>
+        <div class="footnote" style="margin-top:10px;">Finals (from 29 Aug 2026) are seeded by ladder position and TBC.</div>
       </div>
     </div>
 
