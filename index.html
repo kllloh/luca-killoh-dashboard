@@ -106,8 +106,8 @@
   /* points-per-game bar chart, grouped by division */
   .pg-wrap { display: flex; align-items: stretch; gap: 14px; }
   .pg-group { flex: none; }
-  .pg-group.g4 { flex-basis: 30%; }
-  .pg-group.g3 { flex-basis: 62%; }
+  .pg-group.g4 { flex-basis: 26%; }
+  .pg-group.g3 { flex-basis: 70%; }
   .pg-group-label { font-size: 11.5px; font-weight: 800; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 10px; }
   .pg-sep { width: 1px; background: var(--border); align-self: stretch; margin-top: 24px; }
   .pg-chart { display: flex; gap: 10px; align-items: flex-end; height: 190px; padding: 0 2px; position: relative; }
@@ -122,6 +122,7 @@
   .pg-result { margin-top: 4px; font-size: 10px; font-weight: 700; white-space: nowrap; }
   .pg-result.w { color: var(--text-win); }
   .pg-result.l { color: var(--text-loss); }
+  .pg-result.d { color: var(--gold); }
 
   /* horizontal bar list (roster / leaderboard) */
   .hbar-row { display: grid; grid-template-columns: 150px 1fr 44px; align-items: center; gap: 10px; padding: 6px 0; }
@@ -252,27 +253,27 @@
     <div class="tiles">
       <div class="tile">
         <div class="label">Points / game</div>
-        <div class="value">12.4</div>
+        <div class="value">11.6</div>
         <div class="sub">best in both divisions</div>
       </div>
       <div class="tile">
         <div class="label">Total points</div>
-        <div class="value">112</div>
-        <div class="sub">across 9 games</div>
+        <div class="value">128</div>
+        <div class="sub">across 11 games</div>
       </div>
       <div class="tile">
         <div class="label">Team record</div>
-        <div class="value">5&#8211;4</div>
+        <div class="value">6&#8211;4&#8211;1</div>
         <div class="sub">while Luca's played</div>
       </div>
       <div class="tile">
         <div class="label">2PT makes</div>
-        <div class="value">53</div>
-        <div class="sub">+6 free throws, 0 threes</div>
+        <div class="value">59</div>
+        <div class="sub">+10 free throws, 0 threes</div>
       </div>
       <div class="tile">
         <div class="label">Fouls</div>
-        <div class="value">13</div>
+        <div class="value">19</div>
         <div class="sub">all in Division 3 (0 in Div 4)</div>
       </div>
     </div>
@@ -281,23 +282,23 @@
       <h2>Scouting Report</h2>
       <div class="card-sub">Where Luca's at, and what to work on next</div>
       <p class="report-summary">
-        Luca has been the standout player across both divisions this season. He went <strong>3&#8211;0 and unbeaten</strong> in U10 Boys Division 4, leading the whole division in scoring at 13.3 PPG, before Hawks KO were promoted into a tougher Division 3. Since the move, he's kept leading the entire competition in scoring at <strong>12.0 PPG</strong> &mdash; well clear of the next-best player (9.7) &mdash; and his last three games (11, 14, 15 points) are his three highest since the promotion, a good sign heading into the back half of the season.
+        Luca has been the standout player across both divisions this season. He went <strong>3&#8211;0 and unbeaten</strong> in U10 Boys Division 4, leading the whole division in scoring at 13.3 PPG, before Hawks KO were promoted into a tougher Division 3. Since the move, he's continued to lead the competition in scoring at <strong>11.0 PPG</strong> &mdash; though it's now a tight race with Hudson Bromley (10.89). The Hawks have also picked up a win and a draw in their two most recent games, climbing from last place to <strong>5th</strong> on the Division 3 ladder.
       </p>
       <div class="two-col">
         <div>
           <div class="report-heading good">Strengths</div>
           <ul class="report-list">
-            <li><strong>Elite, consistent scoring</strong> &mdash; leads Division 3 in PPG by a wide margin (12.0 vs. 9.7)</li>
-            <li><strong>Trending up</strong> &mdash; his last three games are his three best since moving to Division 3</li>
-            <li><strong>Clean finishing</strong> &mdash; 53 of his 59 made shots have been 2-pointers, with 0 fouls in his first 3 games</li>
+            <li><strong>Elite, consistent scoring</strong> &mdash; still #1 in Division 3 PPG (11.0), just ahead of Hudson Bromley (10.89)</li>
+            <li><strong>Sharing the ball more</strong> &mdash; his share of the team's points has eased from 73% to 67% as teammates like Ted Bramich (34 points) step up</li>
+            <li><strong>High-volume finishing</strong> &mdash; 69 scoring plays this season, 59 of them clean 2-pointers, plus 10 free throws and 0 fouls in his first 3 games</li>
           </ul>
         </div>
         <div>
           <div class="report-heading focus">Focus areas</div>
           <ul class="report-list">
-            <li><strong>Foul discipline</strong> &mdash; 0 fouls across Division 4, but 13 in 6 Division 3 games (~2.2/game); work on positioning rather than reaching against bigger opponents</li>
-            <li><strong>Sharing the load</strong> &mdash; carrying 73% of the team's points in Division 3 (up from 59%); look for open teammates so defenses can't key on him alone</li>
-            <li><strong>Bouncing back faster</strong> &mdash; Round 5 (7 points in a 26-point loss) showed what happens when he's shut down; keep finding ways to score when the first look isn't there</li>
+            <li><strong>Foul discipline</strong> &mdash; 0 fouls across Division 4, but 19 in 8 Division 3 games (~2.4/game); tightening up positioning would keep him on the floor in close games</li>
+            <li><strong>Finishing close games</strong> &mdash; three of the last five Division 3 results have been decided by 3 points or less (a 1-point loss, a 3-point loss, and a draw); composure in the last few minutes could flip these into wins</li>
+            <li><strong>Bouncing back when contained</strong> &mdash; Round 5 (7 points in a 26-point loss) and Round 12 (10 points in a draw) show what physical defenses can do; keep finding ways to score when the first look isn't there</li>
           </ul>
         </div>
       </div>
@@ -335,7 +336,7 @@
         <div class="pg-sep"></div>
 
         <div class="pg-group g3">
-          <div class="pg-group-label">Division 3 &middot; 2&#8211;4 so far (R7 bye)</div>
+          <div class="pg-group-label">Division 3 &middot; 3&#8211;4&#8211;1 so far (R7 bye)</div>
           <div class="pg-chart">
             <div class="pg-col">
               <div class="pg-bar-label">12</div>
@@ -373,6 +374,18 @@
               <div class="pg-x">R10</div>
               <div class="pg-result l">L 21&#8211;24</div>
             </div>
+            <div class="pg-col">
+              <div class="pg-bar-label">6</div>
+              <div class="pg-bar" style="height: 83px;"></div>
+              <div class="pg-x">R11</div>
+              <div class="pg-result w">W 13&#8211;7</div>
+            </div>
+            <div class="pg-col">
+              <div class="pg-bar-label">10</div>
+              <div class="pg-bar" style="height: 112px;"></div>
+              <div class="pg-x">R12</div>
+              <div class="pg-result d">D 20&#8211;20</div>
+            </div>
           </div>
         </div>
       </div>
@@ -392,6 +405,8 @@
             <tr><td>8</td><td>27 Jun 2026</td><td>Div 3</td><td>Saints U10 Boys- RM</td><td>L 13–19</td><td>11</td><td>1</td></tr>
             <tr><td>9</td><td>18 Jul 2026</td><td>Div 3</td><td>Rupo2DB10</td><td>W 22–16</td><td>14</td><td>2</td></tr>
             <tr><td>10</td><td>25 Jul 2026</td><td>Div 3</td><td>RLU U10 Boys AA</td><td>L 21–24</td><td>15</td><td>3</td></tr>
+            <tr><td>11</td><td>09 Aug 2026 (resched.)</td><td>Div 3</td><td>Hawks U10 Boys NC</td><td>W 13–7</td><td>6</td><td>2</td></tr>
+            <tr><td>12</td><td>08 Aug 2026</td><td>Div 3</td><td>Saints U10 Boys- KR</td><td>D 20–20</td><td>10</td><td>4</td></tr>
           </tbody>
         </table>
       </details>
@@ -404,16 +419,16 @@
         <table class="ladder">
           <thead><tr><th>#</th><th>Team</th><th class="num">P</th><th class="num">W</th><th class="num">L</th><th class="num">%</th></tr></thead>
           <tbody>
-            <tr><td>1</td><td class="team">Saints U10 Boys- KR</td><td class="num">9</td><td class="num">6</td><td class="num">3</td><td class="num">176.7</td></tr>
-            <tr><td>2</td><td class="team">Saints U10 Boys- RM</td><td class="num">9</td><td class="num">6</td><td class="num">3</td><td class="num">148.1</td></tr>
-            <tr><td>3</td><td class="team">RLU U10 Boys AA</td><td class="num">9</td><td class="num">5</td><td class="num">3</td><td class="num">125.9</td></tr>
-            <tr><td>4</td><td class="team">RLU U10 Boys LD</td><td class="num">9</td><td class="num">5</td><td class="num">3</td><td class="num">120.9</td></tr>
-            <tr><td>5</td><td class="team">Rupo2DB10</td><td class="num">9</td><td class="num">4</td><td class="num">5</td><td class="num">87.0</td></tr>
-            <tr><td>6</td><td class="team">Hawks U10 Boys NC</td><td class="num">9</td><td class="num">3</td><td class="num">6</td><td class="num">85.4</td></tr>
-            <tr class="me"><td>7</td><td class="team">Hawks U10 Boys KO</td><td class="num">6</td><td class="num">2</td><td class="num">4</td><td class="num">77.8</td></tr>
+            <tr><td>1</td><td class="team">Saints U10 Boys- KR</td><td class="num">11</td><td class="num">7</td><td class="num">3</td><td class="num">161.0</td></tr>
+            <tr><td>2</td><td class="team">RLU U10 Boys AA</td><td class="num">11</td><td class="num">7</td><td class="num">3</td><td class="num">135.3</td></tr>
+            <tr><td>3</td><td class="team">Saints U10 Boys- RM</td><td class="num">11</td><td class="num">6</td><td class="num">4</td><td class="num">123.0</td></tr>
+            <tr><td>4</td><td class="team">RLU U10 Boys LD</td><td class="num">10</td><td class="num">5</td><td class="num">4</td><td class="num">114.5</td></tr>
+            <tr class="me"><td>5</td><td class="team">Hawks U10 Boys KO</td><td class="num">8</td><td class="num">3</td><td class="num">4</td><td class="num">85.6</td></tr>
+            <tr><td>6</td><td class="team">Hawks U10 Boys NC</td><td class="num">11</td><td class="num">3</td><td class="num">7</td><td class="num">84.7</td></tr>
+            <tr><td>7</td><td class="team">Rupo2DB10</td><td class="num">10</td><td class="num">4</td><td class="num">6</td><td class="num">82.8</td></tr>
           </tbody>
         </table>
-        <div class="footnote" style="margin-top:10px;">Hawks KO have played 3 fewer games than the rest of the division — they joined the Division 3 draw in Round 4.</div>
+        <div class="footnote" style="margin-top:10px;">Hawks KO have played 2&#8211;3 fewer games than the rest of the division — they joined the Division 3 draw in Round 4.</div>
       </div>
 
       <div class="card">
@@ -422,32 +437,32 @@
         <div class="hbar-row">
           <div class="hbar-name me">Luca Killoh</div>
           <div class="hbar-track"><div class="hbar-fill me" style="width:100%"></div></div>
-          <div class="hbar-val me">12.0</div>
+          <div class="hbar-val me">11.0</div>
         </div>
         <div class="hbar-row">
           <div class="hbar-name">Hudson Bromley</div>
-          <div class="hbar-track"><div class="hbar-fill" style="width:81%"></div></div>
-          <div class="hbar-val">9.7</div>
-        </div>
-        <div class="hbar-row">
-          <div class="hbar-name">Remi Schuurman</div>
-          <div class="hbar-track"><div class="hbar-fill" style="width:62%"></div></div>
-          <div class="hbar-val">7.4</div>
-        </div>
-        <div class="hbar-row">
-          <div class="hbar-name">Jackson Stafford-Falso</div>
-          <div class="hbar-track"><div class="hbar-fill" style="width:62%"></div></div>
-          <div class="hbar-val">7.4</div>
+          <div class="hbar-track"><div class="hbar-fill" style="width:99%"></div></div>
+          <div class="hbar-val">10.9</div>
         </div>
         <div class="hbar-row">
           <div class="hbar-name">Xavier Runnalls</div>
+          <div class="hbar-track"><div class="hbar-fill" style="width:73%"></div></div>
+          <div class="hbar-val">8.0</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-name">Jackson Stafford-Falso</div>
+          <div class="hbar-track"><div class="hbar-fill" style="width:63%"></div></div>
+          <div class="hbar-val">6.9</div>
+        </div>
+        <div class="hbar-row">
+          <div class="hbar-name">Remi Schuurman</div>
           <div class="hbar-track"><div class="hbar-fill" style="width:60%"></div></div>
-          <div class="hbar-val">7.1</div>
+          <div class="hbar-val">6.6</div>
         </div>
         <div class="hbar-row">
           <div class="hbar-name">Tate Casson</div>
-          <div class="hbar-track"><div class="hbar-fill" style="width:54%"></div></div>
-          <div class="hbar-val">6.5</div>
+          <div class="hbar-track"><div class="hbar-fill" style="width:56%"></div></div>
+          <div class="hbar-val">6.2</div>
         </div>
       </div>
     </div>
@@ -469,17 +484,8 @@
 
       <div class="card">
         <h2>Upcoming Games</h2>
-        <div class="card-sub">Division 3 fixture, Rounds 11&#8211;14</div>
+        <div class="card-sub">Division 3 fixture, Rounds 13&#8211;14</div>
         <ul class="fixture-list">
-          <li class="fixture-row is-cancelled">
-            <div class="fixture-top"><span class="fixture-round">Round 11 &middot; 01 Aug 2026</span><span class="fixture-status cancelled">Cancelled</span></div>
-            <div class="fixture-opp">vs Hawks U10 Boys NC</div>
-          </li>
-          <li class="fixture-row">
-            <div class="fixture-top"><span class="fixture-round">Round 12 &middot; 08 Aug 2026</span><span class="fixture-status upcoming">Upcoming</span></div>
-            <div class="fixture-opp">vs Saints U10 Boys- KR</div>
-            <div class="fixture-meta">12:40 PM &middot; Macedon Ranges Sports Precinct, Court 3</div>
-          </li>
           <li class="fixture-row">
             <div class="fixture-top"><span class="fixture-round">Round 13 &middot; 15 Aug 2026</span><span class="fixture-status upcoming">Upcoming</span></div>
             <div class="fixture-opp">vs RLU U10 Boys LD</div>
@@ -489,38 +495,38 @@
             <div class="fixture-top"><span class="fixture-round">Round 14 &middot; 22 Aug 2026</span><span class="fixture-status bye">Bye</span></div>
           </li>
         </ul>
-        <div class="footnote" style="margin-top:10px;">Finals (from 29 Aug 2026) are seeded by ladder position and TBC.</div>
+        <div class="footnote" style="margin-top:10px;">Round 12 (08 Aug) ended in a 20&#8211;20 draw with Saints KR, and the rescheduled Round 11 game (09 Aug) was a 13&#8211;7 win over Hawks NC. Finals (from 29 Aug 2026) are seeded by ladder position and TBC.</div>
       </div>
     </div>
 
     <div class="card">
       <h2>Team roster — points scored</h2>
-      <div class="card-sub">Hawks U10 Boys KO, Division 3 totals (Rounds 4&#8211;10)</div>
+      <div class="card-sub">Hawks U10 Boys KO, Division 3 totals (Rounds 4&#8211;12)</div>
 
       <div class="hbar-row">
         <div class="hbar-name me">Luca Killoh</div>
         <div class="hbar-track"><div class="hbar-fill me" style="width:100%"></div></div>
-        <div class="hbar-val me">72</div>
+        <div class="hbar-val me">88</div>
       </div>
       <div class="hbar-row">
         <div class="hbar-name">Ted Bramich</div>
-        <div class="hbar-track"><div class="hbar-fill" style="width:28%"></div></div>
-        <div class="hbar-val">20</div>
+        <div class="hbar-track"><div class="hbar-fill" style="width:39%"></div></div>
+        <div class="hbar-val">34</div>
       </div>
       <div class="hbar-row">
         <div class="hbar-name">Harrison O'Connell</div>
-        <div class="hbar-track"><div class="hbar-fill" style="width:6%"></div></div>
-        <div class="hbar-val">4</div>
+        <div class="hbar-track"><div class="hbar-fill" style="width:7%"></div></div>
+        <div class="hbar-val">6</div>
       </div>
       <div class="hbar-row">
         <div class="hbar-name">Jack Matthews</div>
-        <div class="hbar-track"><div class="hbar-fill" style="width:3%"></div></div>
+        <div class="hbar-track"><div class="hbar-fill" style="width:2%"></div></div>
         <div class="hbar-val">2</div>
       </div>
       <div class="hbar-row">
         <div class="hbar-name">Toby Gregoire</div>
         <div class="hbar-track"><div class="hbar-fill" style="width:1%"></div></div>
-        <div class="hbar-val">0</div>
+        <div class="hbar-val">1</div>
       </div>
       <div class="hbar-row">
         <div class="hbar-name">Austin Roberts</div>
@@ -532,7 +538,7 @@
         <div class="hbar-track"><div class="hbar-fill" style="width:1%"></div></div>
         <div class="hbar-val">0</div>
       </div>
-      <div class="footnote">Luca has scored 73% of the team's points in Division 3 (72 of 98) — even more than his 59% share in Division 4.</div>
+      <div class="footnote">Luca has scored 67% of the team's points in Division 3 (88 of 131) — still more than his 59% share in Division 4, though teammates are chipping in more as the season goes on.</div>
     </div>
 
     <div class="card">
@@ -550,7 +556,7 @@
 
     <div class="card">
       <div class="footnote">
-        Source: <a href="https://www.playhq.com/basketball-victoria/org/sunbury-basketball-association/junior-domestic-competition-winter-2026/u10-boys-division-3/statistics" target="_blank" rel="noopener">PlayHQ — U10 Boys Division 3 statistics</a> &amp; <a href="https://www.playhq.com/basketball-victoria/org/sunbury-basketball-association/junior-domestic-competition-winter-2026/u10-boys-division-4/statistics" target="_blank" rel="noopener">U10 Boys Division 4 statistics</a>, Sunbury Basketball Association. Data as of 26 July 2026 (through Round 10).
+        Source: <a href="https://www.playhq.com/basketball-victoria/org/sunbury-basketball-association/junior-domestic-competition-winter-2026/u10-boys-division-3/statistics" target="_blank" rel="noopener">PlayHQ — U10 Boys Division 3 statistics</a> &amp; <a href="https://www.playhq.com/basketball-victoria/org/sunbury-basketball-association/junior-domestic-competition-winter-2026/u10-boys-division-4/statistics" target="_blank" rel="noopener">U10 Boys Division 4 statistics</a>, Sunbury Basketball Association. Data as of 11 August 2026 (through Round 12).
       </div>
     </div>
 
