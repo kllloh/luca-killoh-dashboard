@@ -126,7 +126,7 @@
   .pg-group.g3 { flex-basis: 70%; }
   .pg-group-label { font-size: 11.5px; font-weight: 800; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 10px; }
   .pg-sep { width: 1px; background: var(--border); align-self: stretch; margin-top: 24px; }
-  .pg-chart { display: flex; gap: 10px; align-items: flex-end; height: 190px; padding: 0 2px; position: relative; }
+  .pg-chart { display: flex; gap: 10px; align-items: flex-end; height: 205px; padding: 0 2px; position: relative; }
   .pg-chart::before {
     content: ""; position: absolute; left: 2px; right: 2px; bottom: 34px;
     border-top: 1px solid var(--baseline);
@@ -135,6 +135,8 @@
   .pg-bar-label { font-family: var(--font-display); font-weight: 400; font-size: 17px; color: var(--text-primary); margin-bottom: 6px; }
   .pg-bar { width: 70%; border-radius: 2px 2px 0 0; background: linear-gradient(180deg, var(--accent-cyan), var(--series-1)); box-shadow: 0 0 10px rgba(255,45,120,0.35); }
   .pg-x { margin-top: 8px; font-size: 11.5px; color: var(--text-secondary); font-weight: 700; }
+  .pg-opp { margin-top: 2px; font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .02em; color: var(--text-secondary); white-space: nowrap; }
+  .pg-opp.top { color: var(--gold); }
   .pg-result { margin-top: 4px; font-size: 10px; font-weight: 700; white-space: nowrap; }
   .pg-result.w { color: var(--text-win); }
   .pg-result.l { color: var(--text-loss); }
@@ -361,18 +363,21 @@
               <div class="pg-bar-label">10</div>
               <div class="pg-bar" style="height: 100px;"></div>
               <div class="pg-x">R1</div>
+              <div class="pg-opp">vs #5/7</div>
               <div class="pg-result w">W 17&#8211;4</div>
             </div>
             <div class="pg-col">
               <div class="pg-bar-label">12</div>
               <div class="pg-bar" style="height: 127px;"></div>
               <div class="pg-x">R2</div>
+              <div class="pg-opp">vs #4/7</div>
               <div class="pg-result w">W 20&#8211;12</div>
             </div>
             <div class="pg-col">
               <div class="pg-bar-label">18</div>
               <div class="pg-bar" style="height: 170px;"></div>
               <div class="pg-x">R3</div>
+              <div class="pg-opp">vs #6/7</div>
               <div class="pg-result w">W 31&#8211;1</div>
             </div>
           </div>
@@ -387,71 +392,81 @@
               <div class="pg-bar-label">12</div>
               <div class="pg-bar" style="height: 127px;"></div>
               <div class="pg-x">R4</div>
+              <div class="pg-opp">vs #6/7</div>
               <div class="pg-result w">W 18&#8211;16</div>
             </div>
             <div class="pg-col">
               <div class="pg-bar-label">7</div>
               <div class="pg-bar" style="height: 90px;"></div>
               <div class="pg-x">R5</div>
+              <div class="pg-opp top">vs #1/7</div>
               <div class="pg-result l">L 7&#8211;33</div>
             </div>
             <div class="pg-col">
               <div class="pg-bar-label">13</div>
               <div class="pg-bar" style="height: 134px;"></div>
               <div class="pg-x">R6</div>
+              <div class="pg-opp">vs #4/7</div>
               <div class="pg-result l">L 17&#8211;18</div>
             </div>
             <div class="pg-col">
               <div class="pg-bar-label">11</div>
               <div class="pg-bar" style="height: 119px;"></div>
               <div class="pg-x">R8</div>
+              <div class="pg-opp">vs #3/7</div>
               <div class="pg-result l">L 13&#8211;19</div>
             </div>
             <div class="pg-col">
               <div class="pg-bar-label">14</div>
               <div class="pg-bar" style="height: 141px;"></div>
               <div class="pg-x">R9</div>
+              <div class="pg-opp">vs #7/7</div>
               <div class="pg-result w">W 22&#8211;16</div>
             </div>
             <div class="pg-col">
               <div class="pg-bar-label">15</div>
               <div class="pg-bar" style="height: 148px;"></div>
               <div class="pg-x">R10</div>
+              <div class="pg-opp">vs #2/7</div>
               <div class="pg-result l">L 21&#8211;24</div>
             </div>
             <div class="pg-col">
               <div class="pg-bar-label">6</div>
               <div class="pg-bar" style="height: 83px;"></div>
               <div class="pg-x">R11</div>
+              <div class="pg-opp">vs #6/7</div>
               <div class="pg-result w">W 13&#8211;7</div>
             </div>
             <div class="pg-col">
               <div class="pg-bar-label">10</div>
               <div class="pg-bar" style="height: 112px;"></div>
               <div class="pg-x">R12</div>
+              <div class="pg-opp top">vs #1/7</div>
               <div class="pg-result d">D 20&#8211;20</div>
             </div>
           </div>
         </div>
       </div>
 
+      <div class="footnote" style="margin-top:12px;">&ldquo;vs #N/7&rdquo; shows the opponent's <em>current</em> ladder position in their division (not necessarily their rank at the time the game was played). Gold flags a game against the current #1 team.</div>
+
       <details class="tbl">
         <summary>View as table</summary>
         <table class="data-table">
-          <thead><tr><th>Round</th><th>Date</th><th>Division</th><th>Opponent</th><th>Result</th><th>Luca pts</th><th>Fouls</th></tr></thead>
+          <thead><tr><th>Round</th><th>Date</th><th>Division</th><th>Opponent</th><th>Opp. rank</th><th>Result</th><th>Luca pts</th><th>Fouls</th></tr></thead>
           <tbody>
-            <tr><td>1</td><td>02 May 2026</td><td>Div 4</td><td>Superoos U10 Boys 22 AJ</td><td>W 17–4</td><td>10</td><td>0</td></tr>
-            <tr><td>2</td><td>09 May 2026</td><td>Div 4</td><td>Superoos U10 Boys 23 BH</td><td>W 20–12</td><td>12</td><td>0</td></tr>
-            <tr><td>3</td><td>16 May 2026</td><td>Div 4</td><td>RLU U10 Boys BA</td><td>W 31–1</td><td>18</td><td>0</td></tr>
-            <tr><td>4</td><td>23 May 2026</td><td>Div 3</td><td>Hawks U10 Boys NC</td><td>W 18–16</td><td>12</td><td>1</td></tr>
-            <tr><td>5</td><td>30 May 2026</td><td>Div 3</td><td>Saints U10 Boys- KR</td><td>L 7–33</td><td>7</td><td>3</td></tr>
-            <tr><td>6</td><td>13 Jun 2026</td><td>Div 3</td><td>RLU U10 Boys LD</td><td>L 17–18</td><td>13</td><td>3</td></tr>
-            <tr><td>7</td><td>20 Jun 2026</td><td>Div 3</td><td colspan="4">— Bye —</td></tr>
-            <tr><td>8</td><td>27 Jun 2026</td><td>Div 3</td><td>Saints U10 Boys- RM</td><td>L 13–19</td><td>11</td><td>1</td></tr>
-            <tr><td>9</td><td>18 Jul 2026</td><td>Div 3</td><td>Rupo2DB10</td><td>W 22–16</td><td>14</td><td>2</td></tr>
-            <tr><td>10</td><td>25 Jul 2026</td><td>Div 3</td><td>RLU U10 Boys AA</td><td>L 21–24</td><td>15</td><td>3</td></tr>
-            <tr><td>11</td><td>09 Aug 2026 (resched.)</td><td>Div 3</td><td>Hawks U10 Boys NC</td><td>W 13–7</td><td>6</td><td>2</td></tr>
-            <tr><td>12</td><td>08 Aug 2026</td><td>Div 3</td><td>Saints U10 Boys- KR</td><td>D 20–20</td><td>10</td><td>4</td></tr>
+            <tr><td>1</td><td>02 May 2026</td><td>Div 4</td><td>Superoos U10 Boys 22 AJ</td><td>5/7</td><td>W 17–4</td><td>10</td><td>0</td></tr>
+            <tr><td>2</td><td>09 May 2026</td><td>Div 4</td><td>Superoos U10 Boys 23 BH</td><td>4/7</td><td>W 20–12</td><td>12</td><td>0</td></tr>
+            <tr><td>3</td><td>16 May 2026</td><td>Div 4</td><td>RLU U10 Boys BA</td><td>6/7</td><td>W 31–1</td><td>18</td><td>0</td></tr>
+            <tr><td>4</td><td>23 May 2026</td><td>Div 3</td><td>Hawks U10 Boys NC</td><td>6/7</td><td>W 18–16</td><td>12</td><td>1</td></tr>
+            <tr><td>5</td><td>30 May 2026</td><td>Div 3</td><td>Saints U10 Boys- KR</td><td>1/7</td><td>L 7–33</td><td>7</td><td>3</td></tr>
+            <tr><td>6</td><td>13 Jun 2026</td><td>Div 3</td><td>RLU U10 Boys LD</td><td>4/7</td><td>L 17–18</td><td>13</td><td>3</td></tr>
+            <tr><td>7</td><td>20 Jun 2026</td><td>Div 3</td><td colspan="5">— Bye —</td></tr>
+            <tr><td>8</td><td>27 Jun 2026</td><td>Div 3</td><td>Saints U10 Boys- RM</td><td>3/7</td><td>L 13–19</td><td>11</td><td>1</td></tr>
+            <tr><td>9</td><td>18 Jul 2026</td><td>Div 3</td><td>Rupo2DB10</td><td>7/7</td><td>W 22–16</td><td>14</td><td>2</td></tr>
+            <tr><td>10</td><td>25 Jul 2026</td><td>Div 3</td><td>RLU U10 Boys AA</td><td>2/7</td><td>L 21–24</td><td>15</td><td>3</td></tr>
+            <tr><td>11</td><td>09 Aug 2026 (resched.)</td><td>Div 3</td><td>Hawks U10 Boys NC</td><td>6/7</td><td>W 13–7</td><td>6</td><td>2</td></tr>
+            <tr><td>12</td><td>08 Aug 2026</td><td>Div 3</td><td>Saints U10 Boys- KR</td><td>1/7</td><td>D 20–20</td><td>10</td><td>4</td></tr>
           </tbody>
         </table>
       </details>
