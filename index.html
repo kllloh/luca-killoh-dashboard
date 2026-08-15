@@ -237,6 +237,20 @@
     position: relative; z-index: 1;
   }
 
+  /* kicks alert */
+  .kicks-card {
+    background: var(--surface-1); border: 2px dashed rgba(0,217,255,0.4);
+    border-radius: 4px; padding: 16px 20px; box-shadow: var(--card-shadow);
+    margin: 0 0 16px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  }
+  .kicks-tag {
+    font-family: var(--font-tag); font-size: 18px; color: var(--accent-cyan);
+    background: rgba(0,217,255,0.12); border: 1px solid rgba(0,217,255,0.4);
+    border-radius: 999px; padding: 6px 16px; white-space: nowrap; transform: rotate(-3deg); flex: none;
+  }
+  .kicks-text { font-size: 13px; color: var(--text-secondary); line-height: 1.55; }
+  .kicks-text strong { color: var(--text-primary); }
+
   @media (max-width: 760px) {
     .tiles { grid-template-columns: repeat(2, 1fr); }
     .hbar-row { grid-template-columns: 96px 1fr 38px; }
@@ -296,6 +310,11 @@
       <p>&ldquo;I would like to thank my team mates, my Coach, and my Mum. Shout out to Gub Gub. If you know you know. Peace!&rdquo;</p>
       <footer>&mdash; <cite>Luca Killoh</cite></footer>
     </blockquote>
+
+    <div class="kicks-card">
+      <div class="kicks-tag">NEW KICKS ALERT &#128094;</div>
+      <div class="kicks-text">Luca rocked brand new Air Jordans for his birthday this week. Correlation &ne; causation, but Round 13's 13 points capped a 6&#8594;10&#8594;13 climb over his last three games &mdash; his best scoring stretch since the Division 3 move. We're not saying it's the shoes. We're not <em>not</em> saying it either.</div>
+    </div>
 
     <div class="tiles">
       <div class="tile">
