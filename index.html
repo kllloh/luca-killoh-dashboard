@@ -3,712 +3,522 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Luca Killoh — Player Dashboard</title>
+<meta name="color-scheme" content="light">
+<title>Luca Killoh — Player Stats</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Permanent+Marker&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  html, body { margin: 0; padding: 0; background: #0a0a0b; }
-  body {
-    background-color: #0a0a0b;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  :root {
+    --bg:          #f3f4f6;
+    --surface:     #ffffff;
+    --ink:         #0f172a;
+    --ink-2:       #475569;
+    --line:        #e2e8f0;
+    --line-2:      #cbd5e1;
+    --head:        #0b1220;
+    --head-2:      #111a2e;
+    --on-head:     #ffffff;
+    --on-head-2:   #cbd5e1;
+    --on-head-3:   #94a3b8;
+    --accent:      #e11d74;   /* decorative only */
+    --accent-text: #be185d;   /* text-safe on light surfaces */
+    --blue:        #1d4ed8;
+    --win:         #166534;
+    --win-bg:      #dcfce7;
+    --loss:        #991b1b;
+    --loss-bg:     #fee2e2;
+    --draw:        #92400e;
+    --draw-bg:     #fef3c7;
+    --row-hi:      #fdf2f8;
+    --font-head:   'Barlow Condensed', 'Arial Narrow', system-ui, sans-serif;
+    --font-body:   'Barlow', system-ui, -apple-system, 'Segoe UI', sans-serif;
   }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.5; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .skip { position: absolute; left: -999px; top: 0; background: #fff; color: #000; padding: 8px 12px; z-index: 20; }
+  .skip:focus { left: 8px; top: 8px; }
+  a { color: var(--accent-text); }
 
-  .viz-root {
-    color-scheme: dark;
-    --surface-1:      #18181d;
-    --page-plane:     #0a0a0b;
-    --text-primary:   #ffffff;
-    --text-secondary: #a3a3ab;
-    --gridline:       rgba(255,255,255,0.08);
-    --baseline:       rgba(255,255,255,0.25);
-    --border:         rgba(255,255,255,0.12);
-    --series-1:       #ff2d78;   /* Luca — graffiti pink */
-    --accent-cyan:    #00d9ff;   /* decorative accent only, not used as text */
-    --gold:           #f7e400;   /* hazard-tape yellow */
-    --bar-neutral:    #2c2c33;
-    --text-win:       #39ff14;   /* neon lime, 13.1:1 on surface */
-    --text-loss:      #f87171;   /* 6.46:1 on surface */
-    --row-hi:         rgba(255,45,120,0.16);
-    --card-shadow:    0 6px 22px rgba(0,0,0,0.55);
-    --font-display:   'Bungee', system-ui, sans-serif;
-    --font-tag:       'Permanent Marker', cursive;
-    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-    background: transparent;
-    color: var(--text-primary);
-  }
+  /* top utility bar */
+  .topbar { background: #000; color: var(--on-head-2); font-size: 12.5px; }
+  .topbar .wrap { display: flex; justify-content: space-between; gap: 4px 16px; flex-wrap: wrap; padding-top: 7px; padding-bottom: 7px; }
 
-  .viz-root * { box-sizing: border-box; }
-  .wrap { max-width: 1040px; margin: 0 auto; padding: 20px 16px 48px; }
+  /* player profile */
+  .profile { background: linear-gradient(180deg, var(--head), var(--head-2)); color: var(--on-head); border-bottom: 4px solid var(--accent); }
+  .profile-inner { display: grid; grid-template-columns: auto 1fr auto; gap: 24px; align-items: center; padding-top: 26px; padding-bottom: 22px; }
+  .num { font-family: var(--font-head); font-weight: 700; font-size: 92px; line-height: .9; border-right: 3px solid var(--accent); padding-right: 22px; }
+  .kicker { margin: 0 0 2px; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--on-head-2); font-weight: 600; }
+  h1 { margin: 0; font-family: var(--font-head); font-weight: 700; font-size: 50px; line-height: 1; text-transform: uppercase; letter-spacing: .01em; }
+  .team { margin: 6px 0 0; color: var(--on-head-2); font-size: 16px; }
+  .bio { display: flex; flex-wrap: wrap; gap: 8px 28px; margin: 14px 0 0; }
+  .bio dt { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--on-head-3); }
+  .bio dd { margin: 0; font-weight: 600; }
+  .career { border: 1px solid rgba(255,255,255,.2); border-radius: 6px; padding: 12px 16px; min-width: 270px; background: rgba(255,255,255,.04); }
+  .career h2 { margin: 0 0 8px; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--on-head-2); font-weight: 600; }
+  .career dl { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 0; text-align: center; }
+  .career dt { font-size: 11px; letter-spacing: .1em; color: var(--on-head-3); text-transform: uppercase; }
+  .career dd { margin: 0; font-family: var(--font-head); font-weight: 700; font-size: 32px; line-height: 1.1; }
+  .career p { margin: 8px 0 0; font-size: 12px; color: var(--on-head-3); }
+  .pull { margin: 0; background: #0f172a; border-top: 1px solid rgba(255,255,255,.1); }
+  .pull .wrap { padding-top: 11px; padding-bottom: 11px; display: flex; gap: 4px 12px; align-items: baseline; flex-wrap: wrap; }
+  .pull blockquote { margin: 0; font-style: italic; color: #e2e8f0; }
+  .pull figcaption { color: var(--on-head-3); font-size: 13px; }
 
-  /* header */
-  .header {
-    display: flex; align-items: center; gap: 18px;
-    background: linear-gradient(135deg, #1c1a20, #0d0d0f);
-    border: 1px solid var(--border);
-    border-radius: 4px; padding: 22px 26px; box-shadow: var(--card-shadow);
-    margin-bottom: 0; flex-wrap: wrap; position: relative; overflow: hidden;
-  }
-  .header::before {
-    content: ""; position: absolute; top: -55%; left: -10%; width: 320px; height: 320px;
-    background: radial-gradient(circle, rgba(255,45,120,0.24), transparent 70%);
-    pointer-events: none;
-  }
-  .header::after {
-    content: ""; position: absolute; bottom: -60%; right: -6%; width: 260px; height: 260px;
-    background: radial-gradient(circle, rgba(0,217,255,0.16), transparent 70%);
-    pointer-events: none;
-  }
-  .jersey {
-    width: 72px; height: 72px; border-radius: 4px;
-    background: linear-gradient(160deg, var(--series-1), var(--accent-cyan));
-    color: #fff; display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-display); font-weight: 400; font-size: 28px; letter-spacing: 0;
-    flex: none; position: relative; z-index: 1; transform: rotate(-4deg);
-    border: 3px solid #0a0a0b;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.55), 0 0 0 2px rgba(255,255,255,0.55);
-  }
-  .header h1 {
-    margin: 0; font-family: var(--font-display); font-weight: 400;
-    font-size: 28px; letter-spacing: .5px; text-transform: uppercase;
-    position: relative; z-index: 1; text-shadow: 2px 2px 0 rgba(255,45,120,0.45);
-  }
-  .header .meta { color: var(--text-secondary); font-size: 13.5px; margin-top: 6px; line-height: 1.5; position: relative; z-index: 1; }
-  .header .comp { color: var(--text-secondary); font-size: 12.5px; margin-top: 2px; position: relative; z-index: 1; opacity: .85; }
-  .badge {
-    margin-left: auto; display: flex; align-items: center; gap: 6px;
-    background: rgba(57,255,20,0.14); color: var(--text-win);
-    border: 2px solid rgba(57,255,20,0.5);
-    border-radius: 999px; padding: 7px 14px; font-size: 11.5px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: .04em;
-    white-space: nowrap; position: relative; z-index: 1; transform: rotate(-2deg);
-  }
+  /* season tabs */
+  .tabbar { display: none; background: var(--surface); border-bottom: 1px solid var(--line-2); position: sticky; top: 0; z-index: 10; }
+  .js .tabbar { display: block; }
+  .tablist { display: flex; gap: 4px; overflow-x: auto; }
+  .tab { appearance: none; background: none; border: 0; border-bottom: 4px solid transparent; padding: 12px 20px 8px; font: inherit; cursor: pointer; color: var(--ink-2); text-align: left; flex: none; }
+  .tab strong { display: block; font-family: var(--font-head); font-size: 23px; line-height: 1.1; text-transform: uppercase; letter-spacing: .02em; }
+  .tab small { display: block; font-size: 12.5px; color: var(--ink-2); }
+  .tab:hover { background: #f8fafc; }
+  .tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+  .tab:focus-visible { outline: 3px solid var(--blue); outline-offset: -3px; }
 
-  .stripe {
-    height: 12px; margin: 16px 0; border-radius: 2px;
-    background: repeating-linear-gradient(135deg, var(--gold) 0 18px, #111113 18px 36px);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  /* panels */
+  .panel { padding: 22px 0 40px; }
+  .panel:focus-visible { outline: 2px solid var(--blue); outline-offset: 4px; }
+  .js .panel[hidden] { display: none; }
+  .panel-title { margin: 0 0 14px; font-family: var(--font-head); font-weight: 700; font-size: 32px; line-height: 1.1; text-transform: uppercase; display: flex; gap: 4px 14px; align-items: baseline; flex-wrap: wrap; }
+  .panel-title span { font-family: var(--font-body); font-size: 14px; font-weight: 600; color: var(--ink-2); text-transform: none; }
+
+  /* stat strip */
+  .strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(92px, 1fr)); gap: 1px; margin: 0 0 18px; background: var(--line); border: 1px solid var(--line); border-top: 4px solid var(--accent); border-radius: 4px; overflow: hidden; }
+  .strip > div { background: var(--surface); padding: 12px 8px 10px; text-align: center; }
+  .strip dt { font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); font-weight: 600; }
+  .strip dd { margin: 2px 0 0; font-family: var(--font-head); font-weight: 700; font-size: 36px; line-height: 1.1; }
+
+  /* layout + cards */
+  .cols { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 18px; align-items: start; }
+  .stack { display: grid; gap: 18px; min-width: 0; }
+  .card { background: var(--surface); border: 1px solid var(--border, var(--line)); border-radius: 4px; min-width: 0; }
+  .card > h3 { margin: 0; padding: 10px 14px 8px; border-bottom: 1px solid var(--line); background: #f8fafc; font-family: var(--font-head); font-weight: 700; font-size: 21px; line-height: 1.2; text-transform: uppercase; letter-spacing: .03em; }
+  .body { padding: 14px; }
+  .body p { margin: 0 0 10px; }
+  .body p:last-child { margin-bottom: 0; }
+  .note { font-size: 13px; color: var(--ink-2); }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .list-h { margin: 0 0 6px; font-family: var(--font-head); font-weight: 700; font-size: 19px; text-transform: uppercase; letter-spacing: .03em; }
+  .list-h.good { color: var(--win); }
+  .list-h.focus { color: var(--draw); }
+  ul.notes { margin: 0; padding-left: 18px; }
+  ul.notes li { margin-bottom: 8px; color: var(--ink-2); }
+  ul.notes li strong { color: var(--ink); }
+
+  /* tables */
+  .tw { overflow-x: auto; }
+  .tw:focus-visible { outline: 2px solid var(--blue); outline-offset: -2px; }
+  table.stats { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+  table.stats th, table.stats td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  table.stats thead th { background: #f1f5f9; color: var(--ink-2); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; border-bottom: 2px solid var(--line-2); }
+  table.stats tbody th { font-weight: 600; }
+  table.stats .n { text-align: right; }
+  table.stats tbody tr:nth-child(even) { background: #fafbfc; }
+  table.stats tbody tr:hover { background: #f1f5f9; }
+  table.stats tr.hi, table.stats tbody tr.hi:hover { background: var(--row-hi); }
+  table.stats tr.hi > * { font-weight: 700; }
+  table.stats tr.hi > :first-child { box-shadow: inset 3px 0 0 var(--accent); }
+  table.stats tr.tbc > * { color: var(--ink-2); font-weight: 500; }
+  table.stats tfoot th, table.stats tfoot td { background: #f1f5f9; font-weight: 700; border-top: 2px solid var(--line-2); border-bottom: 0; }
+  table.stats .wrapcell { white-space: normal; min-width: 130px; }
+  .sub { display: block; font-size: 12.5px; color: var(--ink-2); font-weight: 500; }
+  .res { display: inline-block; min-width: 24px; text-align: center; font-weight: 700; font-size: 12.5px; border-radius: 3px; padding: 1px 6px; margin-right: 8px; }
+  .res.w { background: var(--win-bg); color: var(--win); }
+  .res.l { background: var(--loss-bg); color: var(--loss); }
+  .res.d { background: var(--draw-bg); color: var(--draw); }
+  .ptsbar { display: inline-flex; align-items: center; gap: 8px; justify-content: flex-end; }
+  .ptsbar .bar { display: inline-block; height: 8px; border-radius: 2px; background: var(--accent); width: calc(64px * var(--p)); }
+  td.top { color: var(--accent-text); font-weight: 700; }
+
+  /* share bars (NBA spotlight) */
+  .share { display: grid; grid-template-columns: minmax(0, 190px) 1fr 54px; gap: 10px; align-items: center; padding: 6px 0; }
+  .share .track { height: 10px; background: #e2e8f0; border-radius: 2px; overflow: hidden; }
+  .share .fill { height: 100%; background: #64748b; }
+  .share.me .fill { background: var(--accent); }
+  .share .val { text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .share.me { font-weight: 700; }
+
+  /* footer */
+  .site-foot { background: var(--surface); border-top: 1px solid var(--line-2); padding: 20px 0 28px; color: var(--ink-2); font-size: 13px; }
+  .site-foot p { margin: 0 0 6px; }
+
+  @media (max-width: 980px) {
+    .cols { grid-template-columns: minmax(0, 1fr); }
+    .profile-inner { grid-template-columns: auto 1fr; }
+    .career { grid-column: 1 / -1; }
   }
-
-  /* stat tiles */
-  .tiles { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 16px; }
-  .tile {
-    background: var(--surface-1); border: 1px solid var(--border); border-bottom: 3px solid var(--series-1);
-    border-radius: 4px; padding: 16px 16px 14px; box-shadow: var(--card-shadow);
-  }
-  .tile .label { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .06em; font-weight: 700; }
-  .tile .value { font-family: var(--font-display); font-weight: 400; font-size: 30px; margin-top: 6px; color: var(--gold); letter-spacing: 0; text-shadow: 0 0 14px rgba(247,228,0,0.35); }
-  .tile .sub { font-size: 11.5px; color: var(--text-secondary); margin-top: 4px; }
-
-  /* cards */
-  .card {
-    background: var(--surface-1); border: 1px solid var(--border);
-    border-radius: 4px; padding: 22px 24px 18px; box-shadow: var(--card-shadow);
-    margin-bottom: 16px; position: relative; overflow: hidden;
-  }
-  .card::after {
-    content: ""; position: absolute; top: -30px; right: -30px; width: 100px; height: 100px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(0,217,255,0.10), transparent 70%); pointer-events: none;
-  }
-  .card h2 {
-    margin: 0 0 4px; font-family: var(--font-display); font-weight: 400;
-    font-size: 18px; text-transform: uppercase; letter-spacing: .02em;
-    display: flex; align-items: center; gap: 10px;
-  }
-  .card h2::before { content: ""; width: 6px; height: 18px; background: linear-gradient(180deg, var(--series-1), var(--accent-cyan)); border-radius: 1px; display: inline-block; transform: skewX(-12deg); }
-  .card .card-sub { color: var(--text-secondary); font-size: 12.5px; margin-bottom: 18px; }
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-
-  /* points-per-game bar chart, grouped by division */
-  .pg-wrap { display: flex; align-items: stretch; gap: 14px; }
-  .pg-group { flex: none; }
-  .pg-group.g4 { flex-basis: 24%; }
-  .pg-group.g3 { flex-basis: 72%; }
-  .pg-group-label { font-size: 11.5px; font-weight: 800; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 10px; }
-  .pg-sep { width: 1px; background: var(--border); align-self: stretch; margin-top: 24px; }
-  .pg-chart { display: flex; gap: 10px; align-items: flex-end; height: 205px; padding: 0 2px; position: relative; }
-  .pg-chart::before {
-    content: ""; position: absolute; left: 2px; right: 2px; bottom: 34px;
-    border-top: 1px solid var(--baseline);
-  }
-  .pg-col { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; position: relative; }
-  .pg-bar-label { font-family: var(--font-display); font-weight: 400; font-size: 17px; color: var(--text-primary); margin-bottom: 6px; }
-  .pg-bar { width: 70%; border-radius: 2px 2px 0 0; background: linear-gradient(180deg, var(--accent-cyan), var(--series-1)); box-shadow: 0 0 10px rgba(255,45,120,0.35); }
-  .pg-x { margin-top: 8px; font-size: 11.5px; color: var(--text-secondary); font-weight: 700; }
-  .pg-opp { margin-top: 2px; font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .02em; color: var(--text-secondary); white-space: nowrap; }
-  .pg-opp.top { color: var(--gold); }
-  .pg-result { margin-top: 4px; font-size: 10px; font-weight: 700; white-space: nowrap; }
-  .pg-result.w { color: var(--text-win); }
-  .pg-result.l { color: var(--text-loss); }
-  .pg-result.d { color: var(--gold); }
-
-  /* horizontal bar list (roster / leaderboard) */
-  .hbar-row { display: grid; grid-template-columns: 150px 1fr 44px; align-items: center; gap: 10px; padding: 6px 0; }
-  .hbar-name { font-size: 12.5px; color: var(--text-primary); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .hbar-name.me { color: var(--series-1); font-weight: 800; }
-  .hbar-track { position: relative; height: 14px; background: transparent; }
-  .hbar-fill { position: absolute; left: 0; top: 0; height: 100%; border-radius: 3px; background: var(--bar-neutral); }
-  .hbar-fill.me { background: linear-gradient(90deg, var(--series-1), var(--accent-cyan)); }
-  .hbar-val { font-size: 12.5px; font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; color: var(--text-primary); }
-  .hbar-val.me { color: var(--series-1); }
-
-  /* ladder table */
-  table.ladder { width: 100%; border-collapse: collapse; font-size: 12.5px; }
-  table.ladder th, table.ladder td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--gridline); font-variant-numeric: tabular-nums; }
-  table.ladder th { color: var(--text-secondary); font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: .04em; border-bottom: 2px solid var(--accent-cyan); }
-  table.ladder td.num, table.ladder th.num { text-align: right; }
-  table.ladder tr.me { background: var(--row-hi); }
-  table.ladder tr.me td:first-child { font-weight: 800; color: var(--series-1); }
-  table.ladder tr.me td.team { font-weight: 800; color: var(--series-1); }
-
-  details.tbl { margin-top: 10px; }
-  details.tbl summary { cursor: pointer; font-size: 12px; color: var(--text-secondary); padding: 4px 0; }
-  table.data-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12.5px; }
-  table.data-table th, table.data-table td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--gridline); font-variant-numeric: tabular-nums; }
-  table.data-table th { color: var(--text-secondary); font-weight: 700; text-transform: uppercase; font-size: 10.5px; letter-spacing: .04em; }
-
-  .recap-row { display: flex; gap: 22px; flex-wrap: wrap; }
-  .recap-stat .v { font-family: var(--font-display); font-weight: 400; font-size: 24px; color: var(--gold); }
-  .recap-stat .l { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .04em; margin-top: 2px; }
-
-  .footnote { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
-  .footnote a { color: var(--series-1); }
-
-  /* roster */
-  .roster-list { list-style: none; margin: 0; padding: 0; }
-  .roster-row { display: flex; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--gridline); }
-  .roster-row:last-child { border-bottom: none; }
-  .roster-num {
-    font-family: var(--font-display); font-weight: 400; font-size: 17px; color: var(--series-1);
-    width: 30px; text-align: center; flex: none;
-  }
-  .roster-name { font-size: 13.5px; color: var(--text-primary); font-weight: 600; }
-  .roster-name.me { color: var(--series-1); }
-
-  /* fixtures */
-  .fixture-list { list-style: none; margin: 0; padding: 0; }
-  .fixture-row { padding: 10px 0; border-bottom: 1px solid var(--gridline); }
-  .fixture-row:last-child { border-bottom: none; }
-  .fixture-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
-  .fixture-round { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .04em; font-weight: 700; }
-  .fixture-status { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; padding: 3px 8px; border-radius: 3px; white-space: nowrap; }
-  .fixture-status.upcoming { background: rgba(255,45,120,0.15); color: var(--series-1); }
-  .fixture-status.cancelled { background: rgba(248,113,113,0.15); color: var(--text-loss); }
-  .fixture-status.bye { background: rgba(154,161,177,0.15); color: var(--text-secondary); }
-  .fixture-opp { font-size: 14px; font-weight: 700; color: var(--text-primary); margin-top: 5px; }
-  .fixture-row.is-cancelled .fixture-opp { color: var(--text-secondary); text-decoration: line-through; }
-  .fixture-meta { font-size: 11.5px; color: var(--text-secondary); margin-top: 2px; }
-  .fixture-status.loss { background: rgba(248,113,113,0.15); color: var(--text-loss); }
-  .fixture-status.tbc { background: rgba(154,161,177,0.15); color: var(--text-secondary); }
-
-  /* roster points column */
-  .roster-pts { margin-left: auto; font-size: 13px; font-weight: 700; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
-  .roster-pts.me { color: var(--series-1); }
-
-  /* season section headings */
-  .section-title {
-    font-family: var(--font-display); font-weight: 400; text-transform: uppercase;
-    font-size: 22px; letter-spacing: .02em; margin: 30px 0 14px; padding-bottom: 8px;
-    border-bottom: 2px solid var(--accent-cyan); display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
-  }
-  .section-title span { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .06em; color: var(--text-secondary); }
-
-  /* scouting report */
-  .report-summary { font-size: 13.5px; color: var(--text-secondary); line-height: 1.65; margin: 0 0 18px; }
-  .report-summary strong { color: var(--text-primary); }
-  .report-heading {
-    font-family: var(--font-display); font-weight: 400; text-transform: uppercase;
-    letter-spacing: .04em; font-size: 15px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
-  }
-  .report-heading::before { content: ""; width: 4px; height: 15px; border-radius: 2px; display: inline-block; }
-  .report-heading.good { color: var(--text-win); }
-  .report-heading.good::before { background: var(--text-win); }
-  .report-heading.focus { color: var(--gold); }
-  .report-heading.focus::before { background: var(--gold); }
-  .report-list { margin: 0; padding-left: 18px; font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
-  .report-list li { margin-bottom: 8px; }
-  .report-list li strong { color: var(--text-primary); }
-
-  /* quote */
-  .quote-card {
-    background: var(--surface-1); border: 1px dashed rgba(247,228,0,0.4);
-    border-radius: 4px; padding: 22px 26px; box-shadow: var(--card-shadow);
-    margin: 0 0 16px; border-left: 5px solid var(--gold);
-    position: relative; overflow: hidden;
-  }
-  .quote-card::before {
-    content: "\201C"; position: absolute; top: -34px; left: 6px;
-    font-family: var(--font-display); font-size: 130px; line-height: 1;
-    color: rgba(255,255,255,0.05); pointer-events: none;
-  }
-  .quote-card p {
-    margin: 0; font-family: var(--font-tag); font-weight: 400; font-style: normal;
-    font-size: 20px; color: var(--text-primary); line-height: 1.5;
-    position: relative; z-index: 1; transform: rotate(-0.6deg);
-  }
-  .quote-card footer {
-    margin-top: 10px; font-family: var(--font-tag); font-size: 15px; color: var(--accent-cyan); font-style: normal;
-    position: relative; z-index: 1;
-  }
-
-  /* kicks alert */
-  .kicks-card {
-    background: var(--surface-1); border: 2px dashed rgba(0,217,255,0.4);
-    border-radius: 4px; padding: 16px 20px; box-shadow: var(--card-shadow);
-    margin: 0 0 16px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
-  }
-  .kicks-tag {
-    font-family: var(--font-tag); font-size: 18px; color: var(--accent-cyan);
-    background: rgba(0,217,255,0.12); border: 1px solid rgba(0,217,255,0.4);
-    border-radius: 999px; padding: 6px 16px; white-space: nowrap; transform: rotate(-3deg); flex: none;
-  }
-  .kicks-text { font-size: 13px; color: var(--text-secondary); line-height: 1.55; }
-  .kicks-text strong { color: var(--text-primary); }
-
-  @media (max-width: 760px) {
-    .tiles { grid-template-columns: repeat(2, 1fr); }
-    .hbar-row { grid-template-columns: 96px 1fr 38px; }
-    .two-col { grid-template-columns: 1fr; }
-    .pg-wrap { flex-direction: column; }
-    .pg-sep { display: none; }
+  @media (max-width: 640px) {
+    .profile-inner { grid-template-columns: 1fr; gap: 14px; }
+    .num { border-right: 0; border-bottom: 3px solid var(--accent); padding: 0 0 8px; font-size: 64px; display: inline-block; justify-self: start; }
+    h1 { font-size: 40px; }
+    .two { grid-template-columns: 1fr; }
+    .share { grid-template-columns: minmax(0, 120px) 1fr 50px; }
+    .panel-title { font-size: 27px; }
   }
 </style>
 </head>
 <body>
-<div class="viz-root">
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="topbar">
   <div class="wrap">
-
-    <header class="header">
-      <div class="jersey">34</div>
-      <div>
-        <h1>Luca Killoh</h1>
-        <div class="meta">Hawks U12 Boys MT &nbsp;·&nbsp; Woodend Hawks Basketball Club</div>
-        <div class="comp">Sunbury Basketball Association — Junior Domestic Competition, Summer 2026/27 — U12 Boys Grading (moved up from U10 Boys, Winter 2026)</div>
-      </div>
-      <div class="badge">&#8593; Stepped up to U12</div>
-    </header>
-
-    <div class="stripe"></div>
-
-    <main>
-
-    <div class="card">
-      <h2>Scoring Load: Luca vs. The NBA</h2>
-      <div class="card-sub">Share of team offense carried &mdash; Luca's Winter 2026 Division 3 stint vs. the 2025&#8211;26 NBA season</div>
-      <div class="hbar-row">
-        <div class="hbar-name me">Luca Killoh (age 9)</div>
-        <div class="hbar-track"><div class="hbar-fill me" style="width:100%"></div></div>
-        <div class="hbar-val me">67%</div>
-      </div>
-      <div class="hbar-row">
-        <div class="hbar-name">Luka Don&#269;i&#263; &mdash; NBA leader</div>
-        <div class="hbar-track"><div class="hbar-fill" style="width:55%"></div></div>
-        <div class="hbar-val">36.7%</div>
-      </div>
-      <div class="hbar-row">
-        <div class="hbar-name">Giannis Antetokounmpo</div>
-        <div class="hbar-track"><div class="hbar-fill" style="width:54%"></div></div>
-        <div class="hbar-val">36.0%</div>
-      </div>
-      <div class="hbar-row">
-        <div class="hbar-name">Shai Gilgeous-Alexander</div>
-        <div class="hbar-track"><div class="hbar-fill" style="width:48%"></div></div>
-        <div class="hbar-val">32.1%</div>
-      </div>
-      <div class="footnote" style="margin-top:10px;">
-        Luca's figure is his share of Hawks KO's total points scored in Division 3 (101 of 151). The NBA figures are 2025&#8211;26 season usage rate &mdash; the official pro stat closest to &ldquo;how much of the offense runs through you.&rdquo; At <strong>9 years old</strong>, Luca is already carrying a bigger share of his team's scoring than the league's most dominant offensive engines carry as grown adults. That's the kind of engine franchises are built around &mdash; keep feeding it.
-      </div>
-    </div>
-
-    <h2 class="section-title">Summer 2026/27 <span>U12 BOYS GRADING &middot; HAWKS U12 BOYS MT</span></h2>
-
-    <div class="tiles">
-      <div class="tile">
-        <div class="label">Games played</div>
-        <div class="value">1</div>
-        <div class="sub">Round 1 of grading</div>
-      </div>
-      <div class="tile">
-        <div class="label">Total points</div>
-        <div class="value">8</div>
-        <div class="sub">led Hawks MT in R1</div>
-      </div>
-      <div class="tile">
-        <div class="label">Points / game</div>
-        <div class="value">8.0</div>
-        <div class="sub">season opener</div>
-      </div>
-      <div class="tile">
-        <div class="label">Team record</div>
-        <div class="value">0&#8211;1</div>
-        <div class="sub">L 23&#8211;52 vs Saints MD</div>
-      </div>
-      <div class="tile">
-        <div class="label">Fouls</div>
-        <div class="value">4</div>
-        <div class="sub">in the opener</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>New Season, New Level</h2>
-      <div class="card-sub">Luca's first game in the U12 age group</div>
-      <p class="report-summary">
-        Luca has stepped up from U10 to <strong>U12 Boys</strong> for Summer 2026/27, and <strong>Ted Bramich</strong> has made the jump with him. Hawks U12 Boys MT is one of four Woodend Hawks boys teams (KP, MB, CL and MT) in the opening four-round <strong>grading</strong> phase, so there&rsquo;s no ladder yet. The season opened on 10 Oct with a <strong>52&#8211;23 loss</strong> to Saints MD. Luca led Hawks MT with <strong>8 points</strong> (Leon Snell added 7), but picked up <strong>4 fouls</strong> &mdash; the same foul-discipline focus from Winter, now against older opponents. It&rsquo;s one game, so it&rsquo;s too early to read much into the numbers; this section will fill out as the grading rounds are played.
-      </p>
-    </div>
-
-    <div class="two-col">
-      <div class="card">
-        <h2>Hawks U12 Boys MT</h2>
-        <div class="card-sub">Round 1 squad &mdash; points scored</div>
-        <ul class="roster-list">
-          <li class="roster-row"><span class="roster-num">9</span><span class="roster-name">Ajay Salisbury</span><span class="roster-pts">0</span></li>
-          <li class="roster-row"><span class="roster-num">12</span><span class="roster-name">Elias Bryan</span><span class="roster-pts">2</span></li>
-          <li class="roster-row"><span class="roster-num">15</span><span class="roster-name">Kai Morrison</span><span class="roster-pts">2</span></li>
-          <li class="roster-row"><span class="roster-num">16</span><span class="roster-name">Xavier Talbot</span><span class="roster-pts">4</span></li>
-          <li class="roster-row"><span class="roster-num">31</span><span class="roster-name">Ted Bramich</span><span class="roster-pts">0</span></li>
-          <li class="roster-row"><span class="roster-num">34</span><span class="roster-name me">Luca Killoh</span><span class="roster-pts me">8</span></li>
-          <li class="roster-row"><span class="roster-num">39</span><span class="roster-name">Leon Snell</span><span class="roster-pts">7</span></li>
-        </ul>
-      </div>
-
-      <div class="card">
-        <h2>Fixture</h2>
-        <div class="card-sub">Grading rounds &mdash; Rounds 2&#8211;4 not yet confirmed</div>
-        <ul class="fixture-list">
-          <li class="fixture-row">
-            <div class="fixture-top"><span class="fixture-round">Round 1 &middot; 10 Oct 2026</span><span class="fixture-status loss">Loss</span></div>
-            <div class="fixture-opp">vs Saints U12 Boys- MD</div>
-            <div class="fixture-meta">L 23&#8211;52 &middot; Luca 8 pts, 4 fouls &middot; Boardman Sports Stadium, Court 5</div>
-          </li>
-          <li class="fixture-row">
-            <div class="fixture-top"><span class="fixture-round">Round 2 &middot; 17 Oct 2026</span><span class="fixture-status tbc">TBC</span></div>
-          </li>
-          <li class="fixture-row">
-            <div class="fixture-top"><span class="fixture-round">Round 3 &middot; 24 Oct 2026</span><span class="fixture-status tbc">TBC</span></div>
-          </li>
-          <li class="fixture-row">
-            <div class="fixture-top"><span class="fixture-round">Round 4 &middot; 07 Nov 2026</span><span class="fixture-status tbc">TBC</span></div>
-          </li>
-        </ul>
-        <div class="footnote" style="margin-top:10px;">PlayHQ notes that dates and rounds are subject to change until the fixture is confirmed.</div>
-      </div>
-    </div>
-
-    <blockquote class="quote-card">
-      <p>&ldquo;I would like to thank my team mates, my Coach, and my Mum. Shout out to Gub Gub. If you know you know. Peace!&rdquo;</p>
-      <footer>&mdash; <cite>Luca Killoh</cite></footer>
-    </blockquote>
-
-    <h2 class="section-title">Winter 2026 Recap <span>U10 BOYS &middot; DIVISION 4 &amp; DIVISION 3</span></h2>
-
-    <div class="kicks-card">
-      <div class="kicks-tag">NEW KICKS ALERT &#128094;</div>
-      <div class="kicks-text">Luca got brand new Air Jordans for his birthday in August. Correlation &ne; causation, but Round 13's 13 points capped a 6&#8594;10&#8594;13 climb over his last three Winter games &mdash; his best scoring stretch since the Division 3 move. We're not saying it's the shoes. We're not <em>not</em> saying it either.</div>
-    </div>
-
-    <div class="tiles">
-      <div class="tile">
-        <div class="label">Points / game</div>
-        <div class="value">11.8</div>
-        <div class="sub">best in both divisions</div>
-      </div>
-      <div class="tile">
-        <div class="label">Total points</div>
-        <div class="value">141</div>
-        <div class="sub">across 12 games</div>
-      </div>
-      <div class="tile">
-        <div class="label">Team record</div>
-        <div class="value">6&#8211;4&#8211;2</div>
-        <div class="sub">while Luca's played</div>
-      </div>
-      <div class="tile">
-        <div class="label">2PT makes</div>
-        <div class="value">64</div>
-        <div class="sub">+13 free throws, 0 threes</div>
-      </div>
-      <div class="tile">
-        <div class="label">Fouls</div>
-        <div class="value">20</div>
-        <div class="sub">all in Division 3 (0 in Div 4)</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>Winter Scouting Report</h2>
-      <div class="card-sub">Where Luca's at, and what to work on next</div>
-      <p class="report-summary">
-        Luca was the standout player across both divisions in Winter 2026. He went <strong>3&#8211;0 and unbeaten</strong> in U10 Boys Division 4, leading the whole division in scoring at 13.3 PPG, before Hawks KO were promoted into a tougher Division 3. Since the move, he finished as the competition's top scorer at <strong>11.2 PPG</strong>, just ahead of Hudson Bromley (11.0). Hawks KO closed the regular season with a win and two draws in their last three games to finish <strong>5th</strong> on the Division 3 ladder, just outside the top-4 finals places.
-      </p>
-      <div class="two-col">
-        <div>
-          <div class="report-heading good">Strengths</div>
-          <ul class="report-list">
-            <li><strong>Elite, consistent scoring</strong> &mdash; finished the Division 3 regular season #1 in PPG (11.2), narrowly ahead of Hudson Bromley (11.0)</li>
-            <li><strong>Sharing the ball more</strong> &mdash; his share of the team's points has held around 67% (down from 73% earlier) as teammates like Ted Bramich (41 points) keep contributing</li>
-            <li><strong>High-volume finishing</strong> &mdash; 77 scoring plays this season, 64 of them clean 2-pointers, plus 13 free throws and 0 fouls in his first 3 games</li>
-          </ul>
-        </div>
-        <div>
-          <div class="report-heading focus">Focus areas</div>
-          <ul class="report-list">
-            <li><strong>Foul discipline</strong> &mdash; 0 fouls across Division 4, but 20 in 9 Division 3 games (~2.2/game); tightening up positioning would keep him on the floor in close games</li>
-            <li><strong>Finishing close games</strong> &mdash; three of the last five Division 3 results have been decided by 3 points or less (a 3-point loss and back-to-back draws); composure in the last few minutes could turn these into wins</li>
-            <li><strong>Bouncing back when contained</strong> &mdash; Round 5 (7 points in a 26-point loss) and Round 12 (10 points in a draw) show what physical defenses can do; keep finding ways to score when the first look isn't there</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>Points per game — Winter 2026</h2>
-      <div class="card-sub">Undefeated run in Division 4, then promoted into a tougher Division 3</div>
-
-      <div class="pg-wrap">
-        <div class="pg-group g4">
-          <div class="pg-group-label">Division 4 &middot; went 3&#8211;0</div>
-          <div class="pg-chart">
-            <div class="pg-col">
-              <div class="pg-bar-label">10</div>
-              <div class="pg-bar" style="height: 100px;"></div>
-              <div class="pg-x">R1</div>
-              <div class="pg-opp">vs #5/7</div>
-              <div class="pg-result w">W 17&#8211;4</div>
-            </div>
-            <div class="pg-col">
-              <div class="pg-bar-label">12</div>
-              <div class="pg-bar" style="height: 127px;"></div>
-              <div class="pg-x">R2</div>
-              <div class="pg-opp">vs #4/7</div>
-              <div class="pg-result w">W 20&#8211;12</div>
-            </div>
-            <div class="pg-col">
-              <div class="pg-bar-label">18</div>
-              <div class="pg-bar" style="height: 170px;"></div>
-              <div class="pg-x">R3</div>
-              <div class="pg-opp">vs #6/7</div>
-              <div class="pg-result w">W 31&#8211;1</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="pg-sep"></div>
-
-        <div class="pg-group g3">
-          <div class="pg-group-label">Division 3 &middot; 3&#8211;4&#8211;2, regular season done</div>
-          <div class="pg-chart">
-            <div class="pg-col">
-              <div class="pg-bar-label">12</div>
-              <div class="pg-bar" style="height: 127px;"></div>
-              <div class="pg-x">R4</div>
-              <div class="pg-opp">vs #7/7</div>
-              <div class="pg-result w">W 18&#8211;16</div>
-            </div>
-            <div class="pg-col">
-              <div class="pg-bar-label">7</div>
-              <div class="pg-bar" style="height: 90px;"></div>
-              <div class="pg-x">R5</div>
-              <div class="pg-opp">vs #2/7</div>
-              <div class="pg-result l">L 7&#8211;33</div>
-            </div>
-            <div class="pg-col">
-              <div class="pg-bar-label">13</div>
-              <div class="pg-bar" style="height: 134px;"></div>
-              <div class="pg-x">R6</div>
-              <div class="pg-opp">vs #4/7</div>
-              <div class="pg-result l">L 17&#8211;18</div>
-            </div>
-            <div class="pg-col">
-              <div class="pg-bar-label">11</div>
-              <div class="pg-bar" style="height: 119px;"></div>
-              <div class="pg-x">R8</div>
-              <div class="pg-opp">vs #3/7</div>
-              <div class="pg-result l">L 13&#8211;19</div>
-            </div>
-            <div class="pg-col">
-              <div class="pg-bar-label">14</div>
-              <div class="pg-bar" style="height: 141px;"></div>
-              <div class="pg-x">R9</div>
-              <div class="pg-opp">vs #6/7</div>
-              <div class="pg-result w">W 22&#8211;16</div>
-            </div>
-            <div class="pg-col">
-              <div class="pg-bar-label">15</div>
-              <div class="pg-bar" style="height: 148px;"></div>
-              <div class="pg-x">R10</div>
-              <div class="pg-opp top">vs #1/7</div>
-              <div class="pg-result l">L 21&#8211;24</div>
-            </div>
-            <div class="pg-col">
-              <div class="pg-bar-label">6</div>
-              <div class="pg-bar" style="height: 83px;"></div>
-              <div class="pg-x">R11</div>
-              <div class="pg-opp">vs #7/7</div>
-              <div class="pg-result w">W 13&#8211;7</div>
-            </div>
-            <div class="pg-col">
-              <div class="pg-bar-label">10</div>
-              <div class="pg-bar" style="height: 112px;"></div>
-              <div class="pg-x">R12</div>
-              <div class="pg-opp">vs #2/7</div>
-              <div class="pg-result d">D 20&#8211;20</div>
-            </div>
-            <div class="pg-col">
-              <div class="pg-bar-label">13</div>
-              <div class="pg-bar" style="height: 134px;"></div>
-              <div class="pg-x">R13</div>
-              <div class="pg-opp">vs #4/7</div>
-              <div class="pg-result d">D 20&#8211;20</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="footnote" style="margin-top:12px;">&ldquo;vs #N/7&rdquo; shows the opponent's <em>current</em> ladder position in their division (not necessarily their rank at the time the game was played). Gold flags a game against the current #1 team.</div>
-
-      <details class="tbl">
-        <summary>View as table</summary>
-        <table class="data-table">
-          <thead><tr><th>Round</th><th>Date</th><th>Division</th><th>Opponent</th><th>Opp. rank</th><th>Result</th><th>Luca pts</th><th>Fouls</th></tr></thead>
-          <tbody>
-            <tr><td>1</td><td>02 May 2026</td><td>Div 4</td><td>Superoos U10 Boys 22 AJ</td><td>5/7</td><td>W 17–4</td><td>10</td><td>0</td></tr>
-            <tr><td>2</td><td>09 May 2026</td><td>Div 4</td><td>Superoos U10 Boys 23 BH</td><td>4/7</td><td>W 20–12</td><td>12</td><td>0</td></tr>
-            <tr><td>3</td><td>16 May 2026</td><td>Div 4</td><td>RLU U10 Boys BA</td><td>6/7</td><td>W 31–1</td><td>18</td><td>0</td></tr>
-            <tr><td>4</td><td>23 May 2026</td><td>Div 3</td><td>Hawks U10 Boys NC</td><td>7/7</td><td>W 18–16</td><td>12</td><td>1</td></tr>
-            <tr><td>5</td><td>30 May 2026</td><td>Div 3</td><td>Saints U10 Boys- KR</td><td>2/7</td><td>L 7–33</td><td>7</td><td>3</td></tr>
-            <tr><td>6</td><td>13 Jun 2026</td><td>Div 3</td><td>RLU U10 Boys LD</td><td>4/7</td><td>L 17–18</td><td>13</td><td>3</td></tr>
-            <tr><td>7</td><td>20 Jun 2026</td><td>Div 3</td><td colspan="5">— Bye —</td></tr>
-            <tr><td>8</td><td>27 Jun 2026</td><td>Div 3</td><td>Saints U10 Boys- RM</td><td>3/7</td><td>L 13–19</td><td>11</td><td>1</td></tr>
-            <tr><td>9</td><td>18 Jul 2026</td><td>Div 3</td><td>Rupo2DB10</td><td>6/7</td><td>W 22–16</td><td>14</td><td>2</td></tr>
-            <tr><td>10</td><td>25 Jul 2026</td><td>Div 3</td><td>RLU U10 Boys AA</td><td>1/7</td><td>L 21–24</td><td>15</td><td>3</td></tr>
-            <tr><td>11</td><td>09 Aug 2026 (resched.)</td><td>Div 3</td><td>Hawks U10 Boys NC</td><td>7/7</td><td>W 13–7</td><td>6</td><td>2</td></tr>
-            <tr><td>12</td><td>08 Aug 2026</td><td>Div 3</td><td>Saints U10 Boys- KR</td><td>2/7</td><td>D 20–20</td><td>10</td><td>4</td></tr>
-            <tr><td>13</td><td>15 Aug 2026</td><td>Div 3</td><td>RLU U10 Boys LD</td><td>4/7</td><td>D 20–20</td><td>13</td><td>1</td></tr>
-          </tbody>
-        </table>
-      </details>
-    </div>
-
-    <div class="two-col">
-      <div class="card">
-        <h2>Division 3 ladder</h2>
-        <div class="card-sub">Hawks U10 Boys KO — final standings</div>
-        <table class="ladder">
-          <thead><tr><th>#</th><th>Team</th><th class="num">P</th><th class="num">W</th><th class="num">L</th><th class="num">%</th></tr></thead>
-          <tbody>
-            <tr><td>1</td><td class="team">RLU U10 Boys AA</td><td class="num">12</td><td class="num">8</td><td class="num">3</td><td class="num">143.1</td></tr>
-            <tr><td>2</td><td class="team">Saints U10 Boys- KR</td><td class="num">13</td><td class="num">8</td><td class="num">4</td><td class="num">143.8</td></tr>
-            <tr><td>3</td><td class="team">Saints U10 Boys- RM</td><td class="num">13</td><td class="num">8</td><td class="num">4</td><td class="num">137.5</td></tr>
-            <tr><td>4</td><td class="team">RLU U10 Boys LD</td><td class="num">12</td><td class="num">5</td><td class="num">5</td><td class="num">105.3</td></tr>
-            <tr class="me"><td>5</td><td class="team">Hawks U10 Boys KO</td><td class="num">9</td><td class="num">3</td><td class="num">4</td><td class="num">87.3</td></tr>
-            <tr><td>6</td><td class="team">Rupo2DB10</td><td class="num">12</td><td class="num">5</td><td class="num">7</td><td class="num">85.9</td></tr>
-            <tr><td>7</td><td class="team">Hawks U10 Boys NC</td><td class="num">13</td><td class="num">3</td><td class="num">9</td><td class="num">78.0</td></tr>
-          </tbody>
-        </table>
-        <div class="footnote" style="margin-top:10px;">Hawks KO finished 5th, just outside the top-4 finals places. They played fewer games than the rest of the division after joining the Division 3 draw in Round 4.</div>
-      </div>
-
-      <div class="card">
-        <h2>Division 3 scoring leaders</h2>
-        <div class="card-sub">Points-per-game, final Winter 2026 stats</div>
-        <div class="hbar-row">
-          <div class="hbar-name me">Luca Killoh</div>
-          <div class="hbar-track"><div class="hbar-fill me" style="width:100%"></div></div>
-          <div class="hbar-val me">11.2</div>
-        </div>
-        <div class="hbar-row">
-          <div class="hbar-name">Hudson Bromley</div>
-          <div class="hbar-track"><div class="hbar-fill" style="width:98%"></div></div>
-          <div class="hbar-val">11.0</div>
-        </div>
-        <div class="hbar-row">
-          <div class="hbar-name">Xavier Runnalls</div>
-          <div class="hbar-track"><div class="hbar-fill" style="width:65%"></div></div>
-          <div class="hbar-val">7.3</div>
-        </div>
-        <div class="hbar-row">
-          <div class="hbar-name">William Wyatt</div>
-          <div class="hbar-track"><div class="hbar-fill" style="width:58%"></div></div>
-          <div class="hbar-val">6.6</div>
-        </div>
-        <div class="hbar-row">
-          <div class="hbar-name">Jackson Stafford-Falso</div>
-          <div class="hbar-track"><div class="hbar-fill" style="width:53%"></div></div>
-          <div class="hbar-val">5.9</div>
-        </div>
-        <div class="hbar-row">
-          <div class="hbar-name">Remi Schuurman</div>
-          <div class="hbar-track"><div class="hbar-fill" style="width:49%"></div></div>
-          <div class="hbar-val">5.5</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>Team roster — points scored</h2>
-      <div class="card-sub">Hawks U10 Boys KO, Division 3 totals (Rounds 4&#8211;13)</div>
-
-      <div class="hbar-row">
-        <div class="hbar-name me">Luca Killoh</div>
-        <div class="hbar-track"><div class="hbar-fill me" style="width:100%"></div></div>
-        <div class="hbar-val me">101</div>
-      </div>
-      <div class="hbar-row">
-        <div class="hbar-name">Ted Bramich</div>
-        <div class="hbar-track"><div class="hbar-fill" style="width:41%"></div></div>
-        <div class="hbar-val">41</div>
-      </div>
-      <div class="hbar-row">
-        <div class="hbar-name">Harrison O'Connell</div>
-        <div class="hbar-track"><div class="hbar-fill" style="width:6%"></div></div>
-        <div class="hbar-val">6</div>
-      </div>
-      <div class="hbar-row">
-        <div class="hbar-name">Jack Matthews</div>
-        <div class="hbar-track"><div class="hbar-fill" style="width:2%"></div></div>
-        <div class="hbar-val">2</div>
-      </div>
-      <div class="hbar-row">
-        <div class="hbar-name">Toby Gregoire</div>
-        <div class="hbar-track"><div class="hbar-fill" style="width:1%"></div></div>
-        <div class="hbar-val">1</div>
-      </div>
-      <div class="hbar-row">
-        <div class="hbar-name">Austin Roberts</div>
-        <div class="hbar-track"><div class="hbar-fill" style="width:1%"></div></div>
-        <div class="hbar-val">0</div>
-      </div>
-      <div class="hbar-row">
-        <div class="hbar-name">Stuart Perry</div>
-        <div class="hbar-track"><div class="hbar-fill" style="width:1%"></div></div>
-        <div class="hbar-val">0</div>
-      </div>
-      <div class="footnote">Luca has scored 67% of the team's points in Division 3 (101 of 151) — still more than his 59% share in Division 4, holding steady across the Winter regular season.</div>
-    </div>
-
-    <div class="card">
-      <h2>Division 4 recap</h2>
-      <div class="card-sub">Rounds 1&#8211;3, before the move up</div>
-      <div class="recap-row">
-        <div class="recap-stat"><div class="v">3&#8211;0</div><div class="l">Record</div></div>
-        <div class="recap-stat"><div class="v">40</div><div class="l">Luca's points</div></div>
-        <div class="recap-stat"><div class="v">13.3</div><div class="l">PPG</div></div>
-        <div class="recap-stat"><div class="v">0</div><div class="l">Fouls</div></div>
-        <div class="recap-stat"><div class="v">+17</div><div class="l">Avg. margin</div></div>
-      </div>
-      <div class="footnote" style="margin-top:12px;">Luca's 13.3 PPG was the highest of anyone in U10 Boys Division 4, well clear of runner-up Spencer Adams (8.1). Hawks KO went 3–0 (17–4, 20–12, 31–1) before being moved up to Division 3 for Round 4.</div>
-    </div>
-
-    <div class="card">
-      <div class="footnote">
-        Source: <a href="https://www.playhq.com/basketball-victoria/org/sunbury-basketball-association/junior-domestic-competition-winter-2026/u10-boys-division-3/statistics" target="_blank" rel="noopener">PlayHQ — U10 Boys Division 3 statistics</a> &amp; <a href="https://www.playhq.com/basketball-victoria/org/sunbury-basketball-association/junior-domestic-competition-winter-2026/u10-boys-division-4/statistics" target="_blank" rel="noopener">U10 Boys Division 4 statistics</a> (Winter 2026) &amp; <a href="https://www.playhq.com/basketball-victoria/org/sunbury-basketball-association/junior-domestic-competition-summer-202627/u12-boys-grading/479689a4/statistics" target="_blank" rel="noopener">U12 Boys Grading statistics</a> (Summer 2026/27), Sunbury Basketball Association. Winter data is final; Summer data as of 11 October 2026 (through Round 1).
-      </div>
-    </div>
-
-    </main>
+    <span>Sunbury Basketball Association &middot; Junior Domestic Competition</span>
+    <span>Data: PlayHQ &middot; Updated 11 Oct 2026</span>
   </div>
 </div>
+
+<header class="profile">
+  <div class="wrap profile-inner">
+    <div class="num" aria-hidden="true">34</div>
+    <div>
+      <p class="kicker">Player profile</p>
+      <h1>Luca Killoh</h1>
+      <p class="team">Hawks U12 Boys MT &middot; Woodend Hawks Basketball Club</p>
+      <dl class="bio">
+        <div><dt>Jersey</dt><dd>#34</dd></div>
+        <div><dt>Age group</dt><dd>U12 Boys</dd></div>
+        <div><dt>Current</dt><dd>Summer 2026/27 &middot; Grading</dd></div>
+        <div><dt>Previous</dt><dd>Winter 2026 &middot; U10 Boys</dd></div>
+      </dl>
+    </div>
+    <div class="career">
+      <h2>Tracked totals</h2>
+      <dl>
+        <div><dt>GP</dt><dd>13</dd></div>
+        <div><dt>PTS</dt><dd>149</dd></div>
+        <div><dt>PPG</dt><dd>11.5</dd></div>
+        <div><dt>PF</dt><dd>24</dd></div>
+      </dl>
+      <p>Both seasons on PlayHQ, Winter 2026 onward.</p>
+    </div>
+  </div>
+  <figure class="pull">
+    <div class="wrap">
+      <blockquote>&ldquo;I would like to thank my team mates, my Coach, and my Mum. Shout out to Gub Gub. If you know you know. Peace!&rdquo;</blockquote>
+      <figcaption>&mdash; Luca Killoh</figcaption>
+    </div>
+  </figure>
+</header>
+
+<div class="tabbar">
+  <div class="wrap">
+    <div class="tablist" role="tablist" aria-label="Seasons">
+      <button class="tab" role="tab" id="tab-summer" type="button" aria-controls="panel-summer" aria-selected="true" data-hash="summer-2026-27">
+        <strong>Summer 2026/27</strong><small>U12 Boys Grading &middot; Current</small>
+      </button>
+      <button class="tab" role="tab" id="tab-winter" type="button" aria-controls="panel-winter" aria-selected="false" data-hash="winter-2026">
+        <strong>Winter 2026</strong><small>U10 Boys &middot; Divisions 4 &amp; 3</small>
+      </button>
+    </div>
+  </div>
+</div>
+
+<main id="main" class="wrap">
+
+  <!-- ============ SUMMER 2026/27 ============ -->
+  <section class="panel" id="panel-summer" role="tabpanel" aria-labelledby="tab-summer" tabindex="0">
+    <h2 class="panel-title">Summer 2026/27 <span>U12 Boys Grading &middot; Hawks U12 Boys MT</span></h2>
+
+    <dl class="strip">
+      <div><dt>GP</dt><dd>1</dd></div>
+      <div><dt>PTS</dt><dd>8</dd></div>
+      <div><dt>PPG</dt><dd>8.0</dd></div>
+      <div><dt>1PT</dt><dd>0</dd></div>
+      <div><dt>2PT</dt><dd>4</dd></div>
+      <div><dt>3PT</dt><dd>0</dd></div>
+      <div><dt>PF</dt><dd>4</dd></div>
+      <div><dt>Record</dt><dd>0&ndash;1</dd></div>
+    </dl>
+
+    <div class="cols">
+      <div class="stack">
+        <div class="card">
+          <h3>Game Log</h3>
+          <div class="tw" tabindex="0" role="region" aria-label="Summer 2026/27 game log">
+            <table class="stats">
+              <caption class="sr">Luca Killoh game log, Summer 2026/27</caption>
+              <thead><tr><th scope="col">Rnd</th><th scope="col">Date</th><th scope="col">Opponent</th><th scope="col">Result</th><th scope="col" class="n">PTS</th><th scope="col" class="n">PF</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">1</th><td>Sat 10 Oct</td><td>Saints U12 Boys- MD</td><td><span class="res l">L</span>23&ndash;52</td><td class="n"><span class="ptsbar"><span class="bar" style="--p:.44" aria-hidden="true"></span>8</span></td><td class="n">4</td></tr>
+                <tr class="tbc"><th scope="row">2</th><td>Sat 17 Oct</td><td colspan="4">Fixture not yet confirmed</td></tr>
+                <tr class="tbc"><th scope="row">3</th><td>Sat 24 Oct</td><td colspan="4">Fixture not yet confirmed</td></tr>
+                <tr class="tbc"><th scope="row">4</th><td>Sat 07 Nov</td><td colspan="4">Fixture not yet confirmed</td></tr>
+              </tbody>
+              <tfoot><tr><th scope="row" colspan="3">Season</th><td>0&ndash;1</td><td class="n">8</td><td class="n">4</td></tr></tfoot>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Analysis &mdash; New Season, New Level</h3>
+          <div class="body">
+            <p>Luca has stepped up from U10 to <strong>U12 Boys</strong> for Summer 2026/27, and <strong>Ted Bramich</strong> has made the jump with him. The season opened on 10 Oct with a <strong>52&ndash;23 loss</strong> to Saints MD. Luca led Hawks MT with <strong>8 points</strong> (Leon Snell added 7), but picked up <strong>4 fouls</strong> &mdash; the same foul-discipline focus from Winter, now against older opponents.</p>
+            <p class="note">It&rsquo;s one game, so it&rsquo;s too early to read much into the numbers. This page will fill out as the grading rounds are played.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="stack">
+        <div class="card">
+          <h3>Roster &mdash; Hawks U12 Boys MT</h3>
+          <div class="tw" tabindex="0" role="region" aria-label="Hawks U12 Boys MT Round 1 roster">
+            <table class="stats">
+              <caption class="sr">Hawks U12 Boys MT, Round 1 squad with points and fouls</caption>
+              <thead><tr><th scope="col">#</th><th scope="col">Player</th><th scope="col" class="n">PTS</th><th scope="col" class="n">PF</th></tr></thead>
+              <tbody>
+                <tr><td>9</td><th scope="row">Ajay Salisbury</th><td class="n">0</td><td class="n">0</td></tr>
+                <tr><td>12</td><th scope="row">Elias Bryan</th><td class="n">2</td><td class="n">2</td></tr>
+                <tr><td>15</td><th scope="row">Kai Morrison</th><td class="n">2</td><td class="n">1</td></tr>
+                <tr><td>16</td><th scope="row">Xavier Talbot</th><td class="n">4</td><td class="n">4</td></tr>
+                <tr><td>31</td><th scope="row">Ted Bramich</th><td class="n">0</td><td class="n">0</td></tr>
+                <tr class="hi"><td>34</td><th scope="row">Luca Killoh</th><td class="n">8</td><td class="n">4</td></tr>
+                <tr><td>39</td><th scope="row">Leon Snell</th><td class="n">7</td><td class="n">0</td></tr>
+              </tbody>
+              <tfoot><tr><th scope="row" colspan="2">Team</th><td class="n">23</td><td class="n">11</td></tr></tfoot>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Grading Notes</h3>
+          <div class="body">
+            <p class="note">The first four rounds are <strong>grading</strong> rounds, and PlayHQ publishes no ladder for them. Woodend Hawks have four U12 boys teams in grading (KP, MB, CL and MT).</p>
+            <p class="note">PlayHQ notes that dates and rounds are subject to change until the fixture is confirmed.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WINTER 2026 ============ -->
+  <section class="panel" id="panel-winter" role="tabpanel" aria-labelledby="tab-winter" tabindex="0">
+    <h2 class="panel-title">Winter 2026 <span>U10 Boys &middot; Hawks U10 Boys KO &middot; Division 4 &rarr; Division 3</span></h2>
+
+    <dl class="strip">
+      <div><dt>GP</dt><dd>12</dd></div>
+      <div><dt>PTS</dt><dd>141</dd></div>
+      <div><dt>PPG</dt><dd>11.8</dd></div>
+      <div><dt>1PT</dt><dd>13</dd></div>
+      <div><dt>2PT</dt><dd>64</dd></div>
+      <div><dt>3PT</dt><dd>0</dd></div>
+      <div><dt>PF</dt><dd>20</dd></div>
+      <div><dt>Record</dt><dd>6&ndash;4&ndash;2</dd></div>
+    </dl>
+
+    <div class="cols">
+      <div class="stack">
+        <div class="card">
+          <h3>Splits</h3>
+          <div class="tw" tabindex="0" role="region" aria-label="Winter 2026 splits by division">
+            <table class="stats">
+              <caption class="sr">Luca Killoh Winter 2026 splits by division</caption>
+              <thead><tr><th scope="col">Division</th><th scope="col" class="n">GP</th><th scope="col" class="n">PTS</th><th scope="col" class="n">PPG</th><th scope="col" class="n">1PT</th><th scope="col" class="n">2PT</th><th scope="col" class="n">PF</th><th scope="col" class="n">W&ndash;L&ndash;D</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">Division 4 <span class="sub">Rounds 1&ndash;3</span></th><td class="n">3</td><td class="n">40</td><td class="n">13.3</td><td class="n">0</td><td class="n">20</td><td class="n">0</td><td class="n">3&ndash;0&ndash;0</td></tr>
+                <tr><th scope="row">Division 3 <span class="sub">Rounds 4&ndash;13</span></th><td class="n">9</td><td class="n">101</td><td class="n">11.2</td><td class="n">13</td><td class="n">44</td><td class="n">20</td><td class="n">3&ndash;4&ndash;2</td></tr>
+              </tbody>
+              <tfoot><tr><th scope="row">Winter total</th><td class="n">12</td><td class="n">141</td><td class="n">11.8</td><td class="n">13</td><td class="n">64</td><td class="n">20</td><td class="n">6&ndash;4&ndash;2</td></tr></tfoot>
+            </table>
+          </div>
+          <div class="body"><p class="note">Luca&rsquo;s 13.3 PPG led everyone in Division 4, well clear of runner-up Spencer Adams (8.1). Hawks KO went 3&ndash;0 (17&ndash;4, 20&ndash;12, 31&ndash;1; +17 average margin) before being moved up to Division 3 for Round 4.</p></div>
+        </div>
+
+        <div class="card">
+          <h3>Game Log</h3>
+          <div class="tw" tabindex="0" role="region" aria-label="Winter 2026 game log">
+            <table class="stats">
+              <caption class="sr">Luca Killoh game log, Winter 2026, with the opponent&rsquo;s final ladder position</caption>
+              <thead><tr><th scope="col">Rnd</th><th scope="col">Date</th><th scope="col">Div</th><th scope="col">Opponent</th><th scope="col" class="n">Opp rank</th><th scope="col">Result</th><th scope="col" class="n">PTS</th><th scope="col" class="n">PF</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">1</th><td>02 May</td><td>D4</td><td>Superoos U10 Boys 22 AJ</td><td class="n">5/7</td><td><span class="res w">W</span>17&ndash;4</td><td class="n"><span class="ptsbar"><span class="bar" style="--p:.56" aria-hidden="true"></span>10</span></td><td class="n">0</td></tr>
+                <tr><th scope="row">2</th><td>09 May</td><td>D4</td><td>Superoos U10 Boys 23 BH</td><td class="n">4/7</td><td><span class="res w">W</span>20&ndash;12</td><td class="n"><span class="ptsbar"><span class="bar" style="--p:.67" aria-hidden="true"></span>12</span></td><td class="n">0</td></tr>
+                <tr><th scope="row">3</th><td>16 May</td><td>D4</td><td>RLU U10 Boys BA</td><td class="n">6/7</td><td><span class="res w">W</span>31&ndash;1</td><td class="n"><span class="ptsbar"><span class="bar" style="--p:1" aria-hidden="true"></span>18</span></td><td class="n">0</td></tr>
+                <tr><th scope="row">4</th><td>23 May</td><td>D3</td><td>Hawks U10 Boys NC</td><td class="n">7/7</td><td><span class="res w">W</span>18&ndash;16</td><td class="n"><span class="ptsbar"><span class="bar" style="--p:.67" aria-hidden="true"></span>12</span></td><td class="n">1</td></tr>
+                <tr><th scope="row">5</th><td>30 May</td><td>D3</td><td>Saints U10 Boys- KR</td><td class="n">2/7</td><td><span class="res l">L</span>7&ndash;33</td><td class="n"><span class="ptsbar"><span class="bar" style="--p:.39" aria-hidden="true"></span>7</span></td><td class="n">3</td></tr>
+                <tr><th scope="row">6</th><td>13 Jun</td><td>D3</td><td>RLU U10 Boys LD</td><td class="n">4/7</td><td><span class="res l">L</span>17&ndash;18</td><td class="n"><span class="ptsbar"><span class="bar" style="--p:.72" aria-hidden="true"></span>13</span></td><td class="n">3</td></tr>
+                <tr class="tbc"><th scope="row">7</th><td>20 Jun</td><td>D3</td><td colspan="5">Bye</td></tr>
+                <tr><th scope="row">8</th><td>27 Jun</td><td>D3</td><td>Saints U10 Boys- RM</td><td class="n">3/7</td><td><span class="res l">L</span>13&ndash;19</td><td class="n"><span class="ptsbar"><span class="bar" style="--p:.61" aria-hidden="true"></span>11</span></td><td class="n">1</td></tr>
+                <tr><th scope="row">9</th><td>18 Jul</td><td>D3</td><td>Rupo2DB10</td><td class="n">6/7</td><td><span class="res w">W</span>22&ndash;16</td><td class="n"><span class="ptsbar"><span class="bar" style="--p:.78" aria-hidden="true"></span>14</span></td><td class="n">2</td></tr>
+                <tr><th scope="row">10</th><td>25 Jul</td><td>D3</td><td>RLU U10 Boys AA</td><td class="n top">1/7<span class="sr">, top of the ladder</span></td><td><span class="res l">L</span>21&ndash;24</td><td class="n"><span class="ptsbar"><span class="bar" style="--p:.83" aria-hidden="true"></span>15</span></td><td class="n">3</td></tr>
+                <tr><th scope="row">11</th><td>09 Aug <span class="sub">rescheduled</span></td><td>D3</td><td>Hawks U10 Boys NC</td><td class="n">7/7</td><td><span class="res w">W</span>13&ndash;7</td><td class="n"><span class="ptsbar"><span class="bar" style="--p:.33" aria-hidden="true"></span>6</span></td><td class="n">2</td></tr>
+                <tr><th scope="row">12</th><td>08 Aug</td><td>D3</td><td>Saints U10 Boys- KR</td><td class="n">2/7</td><td><span class="res d">D</span>20&ndash;20</td><td class="n"><span class="ptsbar"><span class="bar" style="--p:.56" aria-hidden="true"></span>10</span></td><td class="n">4</td></tr>
+                <tr><th scope="row">13</th><td>15 Aug</td><td>D3</td><td>RLU U10 Boys LD</td><td class="n">4/7</td><td><span class="res d">D</span>20&ndash;20</td><td class="n"><span class="ptsbar"><span class="bar" style="--p:.72" aria-hidden="true"></span>13</span></td><td class="n">1</td></tr>
+              </tbody>
+              <tfoot><tr><th scope="row" colspan="5">Winter total</th><td>6&ndash;4&ndash;2</td><td class="n">141</td><td class="n">20</td></tr></tfoot>
+            </table>
+          </div>
+          <div class="body"><p class="note">Opp rank is the opponent&rsquo;s final position on their division&rsquo;s ladder (7 teams in each division), not their rank at the time of the game. Round 14 was a bye.</p></div>
+        </div>
+
+        <div class="card">
+          <h3>Analysis &mdash; Winter Scouting Report</h3>
+          <div class="body">
+            <p>Luca was the standout player across both divisions in Winter 2026. He went <strong>3&ndash;0 and unbeaten</strong> in Division 4, leading the whole division in scoring at 13.3 PPG, before Hawks KO were promoted into a tougher Division 3. Since the move, he finished as the competition&rsquo;s top scorer at <strong>11.2 PPG</strong>, just ahead of Hudson Bromley (11.0). Hawks KO closed the regular season with a win and two draws in their last three games to finish <strong>5th</strong> on the Division 3 ladder, just outside the top-4 finals places.</p>
+            <div class="two" style="margin-top:16px">
+              <div>
+                <h4 class="list-h good">Strengths</h4>
+                <ul class="notes">
+                  <li><strong>Elite, consistent scoring</strong> &mdash; finished the Division 3 regular season #1 in PPG (11.2), narrowly ahead of Hudson Bromley (11.0)</li>
+                  <li><strong>Sharing the ball more</strong> &mdash; his share of the team&rsquo;s points held around 67% (down from 73% earlier) as teammates like Ted Bramich (41 points) kept contributing</li>
+                  <li><strong>High-volume finishing</strong> &mdash; 77 scoring plays in Winter, 64 of them clean 2-pointers, plus 13 free throws and 0 fouls in his first 3 games</li>
+                </ul>
+              </div>
+              <div>
+                <h4 class="list-h focus">Focus areas</h4>
+                <ul class="notes">
+                  <li><strong>Foul discipline</strong> &mdash; 0 fouls across Division 4, but 20 in 9 Division 3 games (~2.2/game); tighter positioning would keep him on the floor in close games</li>
+                  <li><strong>Finishing close games</strong> &mdash; three of the last five Division 3 results were decided by 3 points or less (a 3-point loss and back-to-back draws); composure in the final minutes could turn these into wins</li>
+                  <li><strong>Bouncing back when contained</strong> &mdash; Round 5 (7 points in a 26-point loss) and Round 12 (10 points in a draw) show what physical defenses can do; keep finding ways to score when the first look isn&rsquo;t there</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Spotlight &mdash; Scoring Load vs. The NBA</h3>
+          <div class="body">
+            <div class="share me"><span>Luca Killoh (age 9)</span><span class="track"><span class="fill" style="display:block;width:100%"></span></span><span class="val">67%</span></div>
+            <div class="share"><span>Luka Don&#269;i&#263; &mdash; NBA leader</span><span class="track"><span class="fill" style="display:block;width:55%"></span></span><span class="val">36.7%</span></div>
+            <div class="share"><span>Giannis Antetokounmpo</span><span class="track"><span class="fill" style="display:block;width:54%"></span></span><span class="val">36.0%</span></div>
+            <div class="share"><span>Shai Gilgeous-Alexander</span><span class="track"><span class="fill" style="display:block;width:48%"></span></span><span class="val">32.1%</span></div>
+            <p class="note" style="margin-top:10px">Luca&rsquo;s figure is his share of Hawks KO&rsquo;s total points scored in Division 3 (101 of 151). The NBA figures are 2025&ndash;26 season usage rate &mdash; the official pro stat closest to &ldquo;how much of the offense runs through you.&rdquo; At <strong>9 years old</strong>, Luca carried a bigger share of his team&rsquo;s scoring than the league&rsquo;s most dominant offensive engines carry as grown adults. That&rsquo;s the kind of engine franchises are built around.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="stack">
+        <div class="card">
+          <h3>Division 3 Scoring Leaders</h3>
+          <div class="tw" tabindex="0" role="region" aria-label="Division 3 scoring leaders">
+            <table class="stats">
+              <caption class="sr">Division 3 points-per-game leaders, final Winter 2026 stats</caption>
+              <thead><tr><th scope="col">#</th><th scope="col">Player</th><th scope="col" class="n">GP</th><th scope="col" class="n">PTS</th><th scope="col" class="n">PPG</th></tr></thead>
+              <tbody>
+                <tr class="hi"><td>1</td><th scope="row" class="wrapcell">Luca Killoh<span class="sub">Hawks U10 Boys KO</span></th><td class="n">9</td><td class="n">101</td><td class="n">11.2</td></tr>
+                <tr><td>2</td><th scope="row" class="wrapcell">Hudson Bromley<span class="sub">RLU U10 Boys AA</span></th><td class="n">12</td><td class="n">132</td><td class="n">11.0</td></tr>
+                <tr><td>3</td><th scope="row" class="wrapcell">Xavier Runnalls<span class="sub">Saints U10 Boys- KR</span></th><td class="n">13</td><td class="n">95</td><td class="n">7.3</td></tr>
+                <tr><td>4</td><th scope="row" class="wrapcell">William Wyatt<span class="sub">Saints U10 Boys- RM</span></th><td class="n">16</td><td class="n">105</td><td class="n">6.6</td></tr>
+                <tr><td>5</td><th scope="row" class="wrapcell">Jackson Stafford-Falso<span class="sub">RLU U10 Boys LD</span></th><td class="n">13</td><td class="n">77</td><td class="n">5.9</td></tr>
+                <tr><td>6</td><th scope="row" class="wrapcell">Remi Schuurman<span class="sub">Hawks U10 Boys NC</span></th><td class="n">13</td><td class="n">72</td><td class="n">5.5</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Division 3 Ladder &mdash; Final</h3>
+          <div class="tw" tabindex="0" role="region" aria-label="Division 3 final ladder">
+            <table class="stats">
+              <caption class="sr">Division 3 final ladder, Winter 2026</caption>
+              <thead><tr><th scope="col">#</th><th scope="col">Team</th><th scope="col" class="n">P</th><th scope="col" class="n">W</th><th scope="col" class="n">L</th><th scope="col" class="n">D</th><th scope="col" class="n">%</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><th scope="row" class="wrapcell">RLU U10 Boys AA</th><td class="n">12</td><td class="n">8</td><td class="n">3</td><td class="n">1</td><td class="n">143.1</td></tr>
+                <tr><td>2</td><th scope="row" class="wrapcell">Saints U10 Boys- KR</th><td class="n">13</td><td class="n">8</td><td class="n">4</td><td class="n">1</td><td class="n">143.8</td></tr>
+                <tr><td>3</td><th scope="row" class="wrapcell">Saints U10 Boys- RM</th><td class="n">13</td><td class="n">8</td><td class="n">4</td><td class="n">1</td><td class="n">137.5</td></tr>
+                <tr><td>4</td><th scope="row" class="wrapcell">RLU U10 Boys LD</th><td class="n">12</td><td class="n">5</td><td class="n">5</td><td class="n">2</td><td class="n">105.3</td></tr>
+                <tr class="hi"><td>5</td><th scope="row" class="wrapcell">Hawks U10 Boys KO</th><td class="n">9</td><td class="n">3</td><td class="n">4</td><td class="n">2</td><td class="n">87.3</td></tr>
+                <tr><td>6</td><th scope="row" class="wrapcell">Rupo2DB10</th><td class="n">12</td><td class="n">5</td><td class="n">7</td><td class="n">0</td><td class="n">85.9</td></tr>
+                <tr><td>7</td><th scope="row" class="wrapcell">Hawks U10 Boys NC</th><td class="n">13</td><td class="n">3</td><td class="n">9</td><td class="n">1</td><td class="n">78.0</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="body"><p class="note">The ladder is ranked by points average, then percentage. Hawks KO played fewer games after joining Division 3 in Round 4, and finished just outside the top-4 finals places.</p></div>
+        </div>
+
+        <div class="card">
+          <h3>Roster &mdash; Hawks U10 Boys KO</h3>
+          <div class="tw" tabindex="0" role="region" aria-label="Hawks U10 Boys KO Division 3 roster stats">
+            <table class="stats">
+              <caption class="sr">Hawks U10 Boys KO Division 3 roster, games, points, points per game and fouls</caption>
+              <thead><tr><th scope="col">#</th><th scope="col">Player</th><th scope="col" class="n">GP</th><th scope="col" class="n">PTS</th><th scope="col" class="n">PPG</th><th scope="col" class="n">PF</th></tr></thead>
+              <tbody>
+                <tr><td>4</td><th scope="row">Harrison O&rsquo;Connell</th><td class="n">9</td><td class="n">6</td><td class="n">0.7</td><td class="n">5</td></tr>
+                <tr><td>22</td><th scope="row">Toby Gregoire</th><td class="n">9</td><td class="n">1</td><td class="n">0.1</td><td class="n">1</td></tr>
+                <tr><td>25</td><th scope="row">Jack Matthews</th><td class="n">8</td><td class="n">2</td><td class="n">0.3</td><td class="n">8</td></tr>
+                <tr><td>26</td><th scope="row">Stuart Perry</th><td class="n">8</td><td class="n">0</td><td class="n">0.0</td><td class="n">3</td></tr>
+                <tr><td>31</td><th scope="row">Ted Bramich</th><td class="n">9</td><td class="n">41</td><td class="n">4.6</td><td class="n">13</td></tr>
+                <tr><td>33</td><th scope="row">Austin Roberts</th><td class="n">8</td><td class="n">0</td><td class="n">0.0</td><td class="n">2</td></tr>
+                <tr class="hi"><td>34</td><th scope="row">Luca Killoh</th><td class="n">9</td><td class="n">101</td><td class="n">11.2</td><td class="n">20</td></tr>
+              </tbody>
+              <tfoot><tr><th scope="row" colspan="3">Team</th><td class="n">151</td><td class="n">&ndash;</td><td class="n">52</td></tr></tfoot>
+            </table>
+          </div>
+          <div class="body"><p class="note">Division 3 only, with Division 3 jersey numbers. Luca scored 67% of the team&rsquo;s points (101 of 151).</p></div>
+        </div>
+
+        <div class="card">
+          <h3>Spotlight &mdash; New Kicks</h3>
+          <div class="body">
+            <p>Luca got brand new Air Jordans for his birthday in August. Correlation &ne; causation, but Round 13&rsquo;s 13 points capped a 6&rarr;10&rarr;13 climb over his last three Winter games &mdash; his best scoring stretch since the Division 3 move. We&rsquo;re not saying it&rsquo;s the shoes. We&rsquo;re not <em>not</em> saying it either.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p>Sources: PlayHQ &mdash; <a href="https://www.playhq.com/basketball-victoria/org/sunbury-basketball-association/junior-domestic-competition-winter-2026/u10-boys-division-3/statistics" target="_blank" rel="noopener">U10 Boys Division 3 statistics</a> &amp; <a href="https://www.playhq.com/basketball-victoria/org/sunbury-basketball-association/junior-domestic-competition-winter-2026/u10-boys-division-4/statistics" target="_blank" rel="noopener">U10 Boys Division 4 statistics</a> (Winter 2026), and <a href="https://www.playhq.com/basketball-victoria/org/sunbury-basketball-association/junior-domestic-competition-summer-202627/u12-boys-grading/479689a4/statistics" target="_blank" rel="noopener">U12 Boys Grading statistics</a> (Summer 2026/27), Sunbury Basketball Association.</p>
+    <p>Winter data is final; Summer data is as of 11 October 2026 (through Round 1). Unofficial fan page, not affiliated with PlayHQ or the NBA. NBA usage-rate figures are from public 2025&ndash;26 season stats.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  document.documentElement.classList.add('js');
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+  if (!tabs.length) return;
+
+  function show(tab, opts) {
+    opts = opts || {};
+    tabs.forEach(function (t) {
+      var on = t === tab;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+      var panel = document.getElementById(t.getAttribute('aria-controls'));
+      if (!panel) return;
+      if (on) { panel.removeAttribute('hidden'); } else { panel.setAttribute('hidden', ''); }
+    });
+    if (opts.focus) tab.focus();
+    if (opts.hash) {
+      try { history.replaceState(null, '', '#' + tab.getAttribute('data-hash')); } catch (e) {}
+    }
+  }
+
+  function fromHash() {
+    var h = (location.hash || '').replace('#', '');
+    for (var i = 0; i < tabs.length; i++) {
+      if (tabs[i].getAttribute('data-hash') === h) return tabs[i];
+    }
+    return null;
+  }
+
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { show(t, { hash: true }); });
+    t.addEventListener('keydown', function (e) {
+      var next = null;
+      if (e.key === 'ArrowRight') next = tabs[(i + 1) % tabs.length];
+      else if (e.key === 'ArrowLeft') next = tabs[(i - 1 + tabs.length) % tabs.length];
+      else if (e.key === 'Home') next = tabs[0];
+      else if (e.key === 'End') next = tabs[tabs.length - 1];
+      if (next) { e.preventDefault(); show(next, { focus: true, hash: true }); }
+    });
+  });
+
+  window.addEventListener('hashchange', function () {
+    var t = fromHash();
+    if (t) show(t);
+  });
+
+  show(fromHash() || tabs[0]);
+})();
+</script>
 </body>
 </html>
